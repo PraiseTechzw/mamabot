@@ -1,0 +1,4 @@
+const form = document.querySelector("#chat-form"); const input = document.querySelector("#message"); const messages = document.querySelector("#messages");
+function add(text, role) { const item = document.createElement("p"); item.className = `message ${role}`; item.textContent = text; messages.appendChild(item); messages.scrollTop = messages.scrollHeight; }
+add("Hello. I am MamaBot. How can I help?", "bot");
+form.addEventListener("submit", async (event) => { event.preventDefault(); const message = input.value.trim(); if (!message) return; add(message, "user"); input.value = ""; try { const response = await fetch("/api/chat", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({message}) }); const data = await response.json(); add(data.text || data.error || "Please try again.", "bot"); } catch (_) { add("The local service is unavailable. Start Flask and try again.", "bot"); } });
