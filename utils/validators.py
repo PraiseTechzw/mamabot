@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import re
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 
 def validate_phone_number(value: str) -> bool:
@@ -75,10 +75,10 @@ def validate_due_date(value: str) -> tuple[bool, str, date | None]:
     except ValueError:
         return False, "date must use YYYY-MM-DD format (e.g. 2026-12-15)", None
 
-    today = date.today()
+    today = datetime.now(tz=timezone.utc).date()
     if parsed <= today:
         return False, "the expected delivery date must be in the future", None
-    max_future = today + timedelta(weeks=42)
+    max_future = datetime.now(tz=timezone.utc).date() + timedelta(weeks=42)
     if parsed > max_future:
         return False, "the expected delivery date seems too far away — please check the date", None
     return True, "", parsed

@@ -4,6 +4,7 @@ The DialogueManager is the single decision point for inbound messages.  It
 checks whether a sender is mid-registration, whether a new registration should
 start, and falls back to the NLP pipeline for all other cases.
 """
+
 from __future__ import annotations
 
 import logging
@@ -63,20 +64,37 @@ class DialogueManager:
         # ---- NLP pipeline -----------------------------------------------
         analysis = analyze(user_text, preferred_language)
         user = self.repository.get_or_create_user(phone_number, analysis.language)
+        response_language = analysis.language
 
         if analysis.intent.intent == "language_switch" and analysis.entities.language:
-            self.repository.update_user_language(phone_number, analysis.entities.language)
+            self.repository.update_user_language(
+                phone_number, analysis.entities.language
+            )
+            response_language = analysis.entities.language
 
-        escalation = analysis.intent.intent in {"danger_sign_query", "escalation_to_nurse"}
+        escalation = analysis.intent.intent in {
+            "danger_sign_query",
+            "escalation_to_nurse",
+        }
         text = response_for(
-            analysis.language,
-            analysis.intent.intent if analysis.intent.confidence >= 0.40 else "fallback",
+            response_language,
+            (
+                analysis.intent.intent
+                if analysis.intent.confidence >= 0.40
+                else "fallback"
+            ),
         )
 
         self._log_exchange(
-            user_text, text, phone_number, channel, analysis.language, user.id
+            user_text, text, phone_number, channel, response_language, user.id
         )
-        return BotReply(text, analysis.language, analysis.intent.intent, analysis.intent.confidence, escalation)
+        return BotReply(
+            text,
+            response_language,
+            analysis.intent.intent,
+            analysis.intent.confidence,
+            escalation,
+        )
 
     # ------------------------------------------------------------------
     # Internal helpers
@@ -103,4 +121,6 @@ class DialogueManager:
                 ConversationMessage(None, user_id, channel, "outbound", outbound, now)
             )
         except Exception:
-            log.exception("Failed to persist conversation messages for %s", phone_number)
+            log.exception(
+                "Failed to persist conversation messages for %s", phone_number
+            )

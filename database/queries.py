@@ -461,7 +461,7 @@ class InMemoryRepository:
         name: str,
         language: str,
         due_date: date,
-        channel: str,  # noqa: ARG002 — stored via user_channels in MySQL; ignored in memory
+        channel: str,
     ) -> tuple[User, PregnancyProfile]:
         """Create or update user + pregnancy profile atomically."""
         with self._lock:

@@ -5,20 +5,12 @@ dialogue pipeline, including the registration flow.
 POST /webhook/test
 {
     "message": "register",
-    "sender": "0771234567",    // optional; defaults to "webhook-user"
-    "language": "en",          // optional; used for NLP hint only
-    "channel": "test"          // optional; defaults to "test"
-}
-
-Response:
-{
-    "text": "...",
+    "sender": "0771234567",
     "language": "en",
-    "intent": "registration",
-    "confidence": 1.0,
-    "escalation": false
+    "channel": "test"
 }
 """
+
 from __future__ import annotations
 
 from flask import Blueprint, jsonify, request
@@ -26,16 +18,6 @@ from flask import Blueprint, jsonify, request
 from utils.validators import validate_message
 
 bp = Blueprint("webhook", __name__)
-
-
-def parse_message():
-    data = request.get_json(silent=True) or {}
-    return (
-        validate_message(data.get("message", "")),
-        str(data.get("sender", "webhook-user")),
-        str(data.get("language", "en")),
-        str(data.get("channel", "test")),
-    )
 
 
 @bp.post("/webhook/message")

@@ -19,10 +19,8 @@ Typical call sequence::
 from __future__ import annotations
 
 import logging
-from datetime import date
 
-from database.models import PregnancyProfile, User
-from dialogue.state import ConversationSession, ConversationState, RegistrationDraft
+from dialogue.state import ConversationSession, ConversationState
 from responses.catalog import (
     CHANNEL_LABELS,
     LANGUAGE_LABELS,
@@ -208,6 +206,10 @@ class RegistrationHandler:
         if phone_number and validate_phone_number(phone_number):
             session.draft.phone_number = normalize_phone_number(phone_number)
 
+        # Pre-fill channel from the transport layer so we can skip the channel
+        # step for channels where the answer is already known (browser, test).
+        session.draft.channel = channel
+
         session.state = ConversationState.REGISTRATION_NAME
         return response_for("en", "reg_welcome"), False
 
@@ -222,6 +224,12 @@ class RegistrationHandler:
         if not validate_name(text):
             return response_for(lang, "reg_invalid_name"), False
         session.draft.name = text.strip()
+
+        # If we were correcting a specific field, return to confirmation
+        if session.draft.correcting:
+            session.draft.correcting = None
+            session.state = ConversationState.REGISTRATION_CONFIRM
+            return _build_confirm_prompt(session), False
 
         # If we already have a valid phone from the transport layer, skip that step
         if session.draft.phone_number:
@@ -240,6 +248,12 @@ class RegistrationHandler:
         if not validate_phone_number(text):
             return response_for(lang, "reg_invalid_phone"), False
         session.draft.phone_number = normalize_phone_number(text)
+
+        if session.draft.correcting:
+            session.draft.correcting = None
+            session.state = ConversationState.REGISTRATION_CONFIRM
+            return _build_confirm_prompt(session), False
+
         session.state = ConversationState.REGISTRATION_LANGUAGE
         return response_for(lang, "reg_ask_language"), False
 
@@ -255,8 +269,13 @@ class RegistrationHandler:
         if not chosen:
             return response_for(lang, "reg_invalid_language"), False
         session.draft.language = chosen
-        # Switch prompt language immediately after user picks
         new_lang = chosen
+
+        if session.draft.correcting:
+            session.draft.correcting = None
+            session.state = ConversationState.REGISTRATION_CONFIRM
+            return _build_confirm_prompt(session), False
+
         session.state = ConversationState.REGISTRATION_DUE_DATE
         return response_for(new_lang, "reg_ask_due_date", example=_DUE_DATE_EXAMPLE), False
 
@@ -272,8 +291,12 @@ class RegistrationHandler:
         session.draft.due_date_raw = text.strip()
         session.draft.due_date = parsed
 
-        # For browser / test channels we already know the channel; skip the step
-        # to keep the flow shorter.  Channel can still be corrected at confirm.
+        if session.draft.correcting:
+            session.draft.correcting = None
+            session.state = ConversationState.REGISTRATION_CONFIRM
+            return _build_confirm_prompt(session), False
+
+        # For browser / test channels the channel is already known; skip the step.
         if session.draft.channel in {"browser", "test"}:
             session.state = ConversationState.REGISTRATION_CONFIRM
             return _build_confirm_prompt(session), False
@@ -291,6 +314,10 @@ class RegistrationHandler:
         if not chosen:
             return response_for(lang, "reg_invalid_channel"), False
         session.draft.channel = chosen
+
+        if session.draft.correcting:
+            session.draft.correcting = None
+
         session.state = ConversationState.REGISTRATION_CONFIRM
         return _build_confirm_prompt(session), False
 
@@ -399,7 +426,7 @@ def _build_confirm_prompt(session: ConversationSession) -> str:
         "reg_confirm",
         name=draft.name or "—",
         phone=draft.phone_number or "—",
-        language=lang_label,
+        lang_display=lang_label,
         due_date=due_str,
         channel=channel_label,
     )

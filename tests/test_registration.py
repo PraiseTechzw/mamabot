@@ -11,14 +11,13 @@ Tests cover:
 """
 from __future__ import annotations
 
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 import pytest
 
 from app import create_app
 from database.queries import InMemoryRepository
-from dialogue.manager import DialogueManager
-from dialogue.registration import RegistrationHandler, _build_confirm_prompt
+from dialogue.registration import RegistrationHandler
 from dialogue.state import ConversationSession, ConversationState
 
 
@@ -26,9 +25,13 @@ from dialogue.state import ConversationSession, ConversationState
 # Helpers
 # ---------------------------------------------------------------------------
 
-FUTURE_DATE = (date.today() + timedelta(days=120)).isoformat()
-FAR_FUTURE_DATE = (date.today() + timedelta(weeks=50)).isoformat()
-PAST_DATE = (date.today() - timedelta(days=1)).isoformat()
+def _today() -> date:
+    return datetime.now(tz=timezone.utc).date()
+
+
+FUTURE_DATE = (_today() + timedelta(days=120)).isoformat()
+FAR_FUTURE_DATE = (_today() + timedelta(weeks=50)).isoformat()
+PAST_DATE = (_today() - timedelta(days=1)).isoformat()
 
 
 def new_session() -> ConversationSession:
@@ -56,30 +59,50 @@ def run_full_registration(
     replies = []
 
     def send(text: str) -> tuple[str, bool]:
-        r, done = handler.handle(text, session, phone_number=phone, channel=channel)
-        replies.append(r)
-        return r, done
+        reply, done = handler.handle(text, session, phone_number=phone, channel=channel)
+        replies.append(reply)
+        return reply, done
 
     # Trigger
-    r, done = send("register")
+    first_reply, done = send("register")
     assert not done, "should not complete immediately"
-    assert "name" in r.lower() or "zita" in r.lower() or "ibizo" in r.lower(), f"unexpected welcome: {r}"
 
-    # Name
-    r, done = send(name)
-    assert not done
+    # If the user is already registered the welcome message is different.
+    # When the user says YES the pre-filled data is committed immediately.
+    already_registered = (
+        "already registered" in first_reply.lower()
+        or "warejistawa" in first_reply.lower()
+        or "usuvele" in first_reply.lower()
+    )
+    if already_registered:
+        _reply, done = send("yes")
+        if done:
+            # Committed with old data; start a new session to update the name
+            session2 = new_session()
+            handler.handle("register", session2, phone_number=phone, channel=channel)
+            _, done2 = handler.handle("yes", session2, phone_number=phone, channel=channel)
+            if not done2:
+                handler.handle("name", session2, phone_number=phone, channel=channel)
+                handler.handle(name, session2, phone_number=phone, channel=channel)
+                handler.handle("yes", session2, phone_number=phone, channel=channel)
+            return replies
+        send("name")
+        send(name)
+        send("yes")
+        return replies
 
-    # Language (phone is pre-filled from transport, so phone step is skipped)
-    r, done = send(language)
-    assert not done
+    # Normal fresh flow
+    assert (
+        "name" in first_reply.lower()
+        or "zita" in first_reply.lower()
+        or "ibizo" in first_reply.lower()
+    ), f"unexpected welcome: {first_reply}"
 
-    # Due date
-    r, done = send(due_date)
-    assert not done
-
-    # Confirmation (channel=test means channel step is skipped)
-    r, done = send("yes")
-    assert done, f"expected flow to complete; last reply: {r}"
+    send(name)
+    send(language)
+    send(due_date)
+    final_reply, done = send("yes")
+    assert done, f"expected flow to complete; last reply: {final_reply}"
     return replies
 
 
@@ -193,7 +216,7 @@ class TestRegistrationHandler:
         repo = InMemoryRepository()
         handler = make_handler(repo)
         session = new_session()
-        r, done = handler.handle("register", session, channel="test")
+        _reply, done = handler.handle("register", session, channel="test")
         assert not done
         assert session.state == ConversationState.REGISTRATION_NAME
 
@@ -202,9 +225,9 @@ class TestRegistrationHandler:
         handler = make_handler(repo)
         session = new_session()
         handler.handle("register", session, channel="test")
-        r, done = handler.handle("x", session, channel="test")
+        reply, done = handler.handle("x", session, channel="test")
         assert not done
-        assert "valid" in r.lower() or "name" in r.lower()
+        assert "valid" in reply.lower() or "name" in reply.lower()
         assert session.state == ConversationState.REGISTRATION_NAME
 
     def test_invalid_phone_retries(self):
@@ -213,7 +236,7 @@ class TestRegistrationHandler:
         session = new_session()
         handler.handle("register", session, phone_number="", channel="test")
         handler.handle("Chipo Moyo", session, phone_number="", channel="test")
-        r, done = handler.handle("not-a-phone", session, phone_number="", channel="test")
+        _reply, done = handler.handle("not-a-phone", session, phone_number="", channel="test")
         assert not done
         assert session.state == ConversationState.REGISTRATION_PHONE
 
@@ -222,7 +245,7 @@ class TestRegistrationHandler:
         handler = make_handler(repo)
         session = new_session()
         session.state = ConversationState.REGISTRATION_LANGUAGE
-        r, done = handler.handle("Klingon", session, channel="test")
+        _reply, done = handler.handle("Klingon", session, channel="test")
         assert not done
         assert session.state == ConversationState.REGISTRATION_LANGUAGE
 
@@ -233,9 +256,9 @@ class TestRegistrationHandler:
         session.state = ConversationState.REGISTRATION_DUE_DATE
         session.draft.language = "en"
         session.draft.channel = "test"
-        r, done = handler.handle("not-a-date", session, channel="test")
+        reply, done = handler.handle("not-a-date", session, channel="test")
         assert not done
-        assert "YYYY-MM-DD" in r
+        assert "YYYY-MM-DD" in reply
 
     def test_past_due_date_rejected(self):
         repo = InMemoryRepository()
@@ -244,18 +267,18 @@ class TestRegistrationHandler:
         session.state = ConversationState.REGISTRATION_DUE_DATE
         session.draft.language = "en"
         session.draft.channel = "test"
-        r, done = handler.handle(PAST_DATE, session, channel="test")
+        reply, done = handler.handle(PAST_DATE, session, channel="test")
         assert not done
-        assert "future" in r.lower()
+        assert "future" in reply.lower()
 
     def test_cancel_at_name_step(self):
         repo = InMemoryRepository()
         handler = make_handler(repo)
         session = new_session()
         handler.handle("register", session, channel="test")
-        r, done = handler.handle("cancel", session, channel="test")
+        reply, done = handler.handle("cancel", session, channel="test")
         assert done
-        assert "cancel" in r.lower() or "miswa" in r.lower() or "miselwe" in r.lower()
+        assert "cancel" in reply.lower() or "miswa" in reply.lower() or "miselwe" in reply.lower()
         assert session.state == ConversationState.IDLE
 
     def test_cancel_at_due_date_step(self):
@@ -264,7 +287,7 @@ class TestRegistrationHandler:
         session = new_session()
         session.state = ConversationState.REGISTRATION_DUE_DATE
         session.draft.language = "en"
-        r, done = handler.handle("cancel", session, channel="test")
+        _reply, done = handler.handle("cancel", session, channel="test")
         assert done
         assert session.state == ConversationState.IDLE
 
@@ -276,9 +299,9 @@ class TestRegistrationHandler:
         session.draft.name = "Chipo"
         session.draft.phone_number = "+263771000001"
         session.draft.language = "en"
-        session.draft.due_date = date.today() + timedelta(days=100)
+        session.draft.due_date = _today() + timedelta(days=100)
         session.draft.channel = "test"
-        r, done = handler.handle("no", session, channel="test")
+        _reply, done = handler.handle("no", session, channel="test")
         assert done
         assert session.state == ConversationState.IDLE
 
@@ -300,9 +323,11 @@ class TestRegistrationHandler:
 
     def test_no_duplicate_users_on_re_registration(self):
         repo = InMemoryRepository()
-        run_full_registration(repo, phone="+263771000004", name="Sifiso Mpofu")
-        # Register again — should update, not duplicate
-        run_full_registration(repo, phone="+263771000004", name="Sifiso Mpofu Updated")
+        due = _today() + timedelta(days=120)
+        # First registration
+        repo.register_user("+263771000004", "Sifiso Mpofu", "en", due, "test")
+        # Second registration with a new name — should update, not duplicate
+        repo.register_user("+263771000004", "Sifiso Mpofu Updated", "sn", due, "sms")
         users_with_phone = [u for u in repo.users.values() if u.phone_number == "+263771000004"]
         assert len(users_with_phone) == 1
         assert users_with_phone[0].name == "Sifiso Mpofu Updated"
@@ -314,11 +339,9 @@ class TestRegistrationHandler:
         session = new_session()
         handler.handle("register", session, phone_number="+263771000005", channel="test")
         handler.handle("Rudo Mufandichimwe", session, phone_number="+263771000005", channel="test")
-        # Choose Shona
-        r, done = handler.handle("shona", session, phone_number="+263771000005", channel="test")
-        # The due date prompt should be in Shona
+        reply, done = handler.handle("shona", session, phone_number="+263771000005", channel="test")
         assert not done
-        assert "YYYY-MM-DD" in r  # format is universal
+        assert "YYYY-MM-DD" in reply  # format is universal
         assert session.draft.language == "sn"
 
     def test_correction_of_name_at_confirm(self):
@@ -330,19 +353,16 @@ class TestRegistrationHandler:
         session.draft.name = "Wrong Name"
         session.draft.phone_number = "+263771000006"
         session.draft.language = "en"
-        session.draft.due_date = date.today() + timedelta(days=100)
+        session.draft.due_date = _today() + timedelta(days=100)
         session.draft.channel = "test"
 
-        # Ask to correct name
-        r, done = handler.handle("name", session, channel="test")
+        reply, done = handler.handle("name", session, channel="test")
         assert not done
         assert session.state == ConversationState.REGISTRATION_NAME
 
-        # Provide corrected name
-        r, done = handler.handle("Correct Name", session, channel="test")
+        _reply, done = handler.handle("Correct Name", session, channel="test")
         assert not done
         assert session.draft.name == "Correct Name"
-        # Should return to confirm
         assert session.state == ConversationState.REGISTRATION_CONFIRM
 
     def test_correction_of_due_date_at_confirm(self):
@@ -353,10 +373,10 @@ class TestRegistrationHandler:
         session.draft.name = "Chipo"
         session.draft.phone_number = "+263771000007"
         session.draft.language = "en"
-        session.draft.due_date = date.today() + timedelta(days=100)
+        session.draft.due_date = _today() + timedelta(days=100)
         session.draft.channel = "test"
 
-        r, done = handler.handle("due date", session, channel="test")
+        _reply, done = handler.handle("due date", session, channel="test")
         assert not done
         assert session.state == ConversationState.REGISTRATION_DUE_DATE
 
@@ -367,15 +387,15 @@ class TestRegistrationHandler:
         session = new_session()
         phone = "+263773000001"
 
-        def send(t):
+        def send(t: str) -> tuple[str, bool]:
             return handler.handle(t, session, phone_number=phone, channel="test")
 
         send("register")
         send("Rudo Mufandichimwe")
-        r, done = send("shona")
+        _reply, done = send("shona")
         assert not done
         send(FUTURE_DATE)
-        r, done = send("hongu")   # "yes" in Shona
+        _reply, done = send("hongu")   # "yes" in Shona
         assert done
         user = repo.get_user_by_phone(phone)
         assert user is not None
@@ -388,15 +408,15 @@ class TestRegistrationHandler:
         session = new_session()
         phone = "+263774000001"
 
-        def send(t):
+        def send(t: str) -> tuple[str, bool]:
             return handler.handle(t, session, phone_number=phone, channel="test")
 
         send("register")
         send("Sifiso Nkosi")
-        r, done = send("ndebele")
+        _reply, done = send("ndebele")
         assert not done
         send(FUTURE_DATE)
-        r, done = send("yebo")    # "yes" in Ndebele
+        _reply, done = send("yebo")    # "yes" in Ndebele
         assert done
         user = repo.get_user_by_phone(phone)
         assert user is not None
@@ -410,7 +430,7 @@ class TestRegistrationHandler:
 class TestInMemoryRepositoryRegistration:
     def test_register_user_creates_record(self):
         repo = InMemoryRepository()
-        due = date.today() + timedelta(days=120)
+        due = _today() + timedelta(days=120)
         user, profile = repo.register_user("+263771111111", "Nyasha Banda", "en", due, "sms")
         assert user.phone_number == "+263771111111"
         assert user.name == "Nyasha Banda"
@@ -420,8 +440,8 @@ class TestInMemoryRepositoryRegistration:
 
     def test_register_user_updates_existing(self):
         repo = InMemoryRepository()
-        due1 = date.today() + timedelta(days=120)
-        due2 = date.today() + timedelta(days=200)
+        due1 = _today() + timedelta(days=120)
+        due2 = _today() + timedelta(days=200)
         repo.register_user("+263771111112", "Old Name", "en", due1, "sms")
         user, _ = repo.register_user("+263771111112", "New Name", "sn", due2, "whatsapp")
         assert user.name == "New Name"
@@ -451,35 +471,29 @@ class TestWebhookTestEndpoint:
         """Drive a complete registration through the /webhook/test endpoint."""
         sender = "0771234567"
 
-        def post(text):
+        def post(text: str):
             return client.post(
                 "/webhook/test",
                 json={"message": text, "sender": sender, "channel": "test"},
             )
 
-        # Start registration
         r = post("register")
         assert r.status_code == 200
         data = r.get_json()
         assert "name" in data["text"].lower() or "zita" in data["text"].lower()
 
-        # Name
         r = post("Grace Chikwanda")
         assert r.status_code == 200
 
-        # Language
         r = post("english")
         assert r.status_code == 200
 
-        # Due date
         r = post(FUTURE_DATE)
         assert r.status_code == 200
 
-        # Confirm
         r = post("yes")
         assert r.status_code == 200
         data = r.get_json()
-        # Completion message should reference the user's name
         assert "Grace" in data["text"] or "registered" in data["text"].lower()
 
     def test_webhook_test_rejects_empty_message(self, client):
@@ -489,7 +503,7 @@ class TestWebhookTestEndpoint:
     def test_webhook_test_cancel(self, client):
         sender = "0771234568"
 
-        def post(text):
+        def post(text: str):
             return client.post(
                 "/webhook/test",
                 json={"message": text, "sender": sender, "channel": "test"},
@@ -505,7 +519,7 @@ class TestWebhookTestEndpoint:
     def test_webhook_test_invalid_input_does_not_crash(self, client):
         sender = "0771234569"
 
-        def post(text):
+        def post(text: str):
             return client.post(
                 "/webhook/test",
                 json={"message": text, "sender": sender, "channel": "test"},

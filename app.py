@@ -1,4 +1,5 @@
 """MamaBot Flask application."""
+
 from __future__ import annotations
 
 import logging
@@ -17,7 +18,9 @@ from routes.whatsapp import register as register_whatsapp
 from services.message_service import MessageService
 from utils.validators import validate_message
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s"
+)
 log = logging.getLogger(__name__)
 ROOT = Path(__file__).resolve().parent
 
@@ -28,7 +31,7 @@ def create_app(test_config: dict | None = None) -> Flask:
     if test_config:
         app.config.update(test_config)
 
-    manager = DialogueManager(repository)
+    manager = DialogueManager(app.config.get("MAMABOT_REPOSITORY", repository))
     service = MessageService(manager)
     app.extensions["mamabot_service"] = service
 
@@ -45,13 +48,15 @@ def create_app(test_config: dict | None = None) -> Flask:
             return jsonify({"error": str(exc)}), 400
         language = str(data.get("language", "en"))
         reply = service.handle(text, "local-user", "browser", language)
-        return jsonify({
-            "text": reply.text,
-            "language": reply.language,
-            "intent": reply.intent,
-            "confidence": round(reply.confidence, 3),
-            "escalation": reply.escalation,
-        })
+        return jsonify(
+            {
+                "text": reply.text,
+                "language": reply.language,
+                "intent": reply.intent,
+                "confidence": round(reply.confidence, 3),
+                "escalation": reply.escalation,
+            }
+        )
 
     @app.errorhandler(500)
     def internal_error(error):
@@ -69,4 +74,8 @@ def create_app(test_config: dict | None = None) -> Flask:
 app = create_app()
 
 if __name__ == "__main__":
-    app.run(host=settings.host, port=settings.port, debug=settings.flask_env == "development")
+    app.run(
+        host=settings.host,
+        port=settings.port,
+        debug=settings.flask_env == "development",
+    )
