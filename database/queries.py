@@ -626,13 +626,25 @@ class InMemoryRepository:
         return [
             a
             for a in self.appointments
-            if a.appointment_date == on_date and not a.reminder_sent
+            if a.appointment_date == on_date
+            and not a.reminder_sent
+            and a.status == "scheduled"
         ]
 
     def mark_reminder_sent(self, appointment_id: int) -> None:
         self.appointments = [
             (
-                Appointment(a.id, a.user_id, a.appointment_date, True)
+                Appointment(
+                    a.id,
+                    a.user_id,
+                    a.appointment_date,
+                    True,
+                    a.appointment_type,
+                    a.status,
+                    a.pregnancy_profile_id,
+                    a.created_at,
+                    a.updated_at,
+                )
                 if a.id == appointment_id
                 else a
             )

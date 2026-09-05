@@ -21,6 +21,7 @@ def _as_bool(value: str | None, default: bool = False) -> bool:
 @dataclass(frozen=True)
 class Settings:
     secret_key: str = os.getenv("SECRET_KEY", "local-development-only")
+    admin_token: str = os.getenv("ADMIN_TOKEN", "")
     flask_env: str = os.getenv("FLASK_ENV", "development")
     host: str = os.getenv("HOST", "127.0.0.1")
     port: int = int(os.getenv("PORT", "5000"))

@@ -59,3 +59,22 @@ def test_database_scripts_cover_required_relational_entities():
     ):
         assert f"CREATE TABLE IF NOT EXISTS {table}" in schema
     assert "0770000000" in seed
+
+
+def test_in_memory_due_appointments_match_scheduled_contract():
+    from datetime import date
+
+    repository = InMemoryRepository()
+    appointment = repository.add_appointment("0771234567", date(2026, 9, 5))
+    repository.appointments[0] = type(appointment)(
+        appointment.id,
+        appointment.user_id,
+        appointment.appointment_date,
+        appointment.reminder_sent,
+        appointment.appointment_type,
+        "cancelled",
+        appointment.pregnancy_profile_id,
+        appointment.created_at,
+        appointment.updated_at,
+    )
+    assert repository.due_appointments(date(2026, 9, 5)) == []

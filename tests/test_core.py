@@ -55,6 +55,12 @@ def test_local_flask_chat_works_without_external_credentials():
     assert client.get("/").status_code == 200
 
 
+def test_test_webhook_is_disabled_outside_testing():
+    client = create_app().test_client()
+    response = client.post("/webhook/test", json={"message": "hello"})
+    assert response.status_code == 404
+
+
 def test_reminder_job_sends_once():
     repository = InMemoryRepository()
     repository.add_appointment("0771234567", date(2026, 9, 4))

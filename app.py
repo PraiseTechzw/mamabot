@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import atexit
 import logging
 from pathlib import Path
 
@@ -12,6 +13,7 @@ from database.queries import repository
 from dialogue.manager import DialogueManager
 from messaging.sms_provider import MockSmsPopProvider, SmsPopProvider
 from messaging.whatsapp_provider import MockWhatsAppProvider, WhatsAppProvider
+from reminders.scheduler import shutdown_scheduler, start_scheduler
 from routes.admin import bp as admin_bp
 from routes.health import bp as health_bp
 from routes.sms import register as register_sms
@@ -29,7 +31,11 @@ ROOT = Path(__file__).resolve().parent
 
 def create_app(test_config: dict | None = None) -> Flask:
     app = Flask(__name__, static_folder="frontend", static_url_path="/static")
-    app.config.from_mapping(SECRET_KEY=settings.secret_key, TESTING=False)
+    app.config.from_mapping(
+        SECRET_KEY=settings.secret_key,
+        TESTING=False,
+        ADMIN_TOKEN=settings.admin_token,
+    )
     if test_config:
         app.config.update(test_config)
 
@@ -87,10 +93,13 @@ def create_app(test_config: dict | None = None) -> Flask:
             else MockWhatsAppProvider()
         )
     app.register_blueprint(register_whatsapp(service, whatsapp_provider))
+    if settings.enable_reminder_scheduler and not app.testing:
+        start_scheduler(app.config.get("REMINDER_PROVIDERS", {}))
     return app
 
 
 app = create_app()
+atexit.register(shutdown_scheduler)
 
 if __name__ == "__main__":
     app.run(

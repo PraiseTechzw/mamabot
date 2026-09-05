@@ -30,6 +30,9 @@ def test_webhook():
     """Stateful test endpoint that exercises the full conversation pipeline."""
     from flask import current_app
 
+    if not (current_app.testing or current_app.config.get("ALLOW_TEST_WEBHOOK", False)):
+        return jsonify({"error": "Test webhook is disabled."}), 404
+
     service = current_app.extensions.get("mamabot_service")
     if service is None:
         return jsonify({"error": "Service not initialised."}), 500

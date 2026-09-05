@@ -96,15 +96,20 @@ def save_model(model: Pipeline, path: Path = MODEL_PATH) -> None:
 @lru_cache(maxsize=4)
 def load_model(path: Path = MODEL_PATH) -> Pipeline:
     if not path.exists():
-        model = build_model()
-        save_model(model, path)
-        return model
+        raise FileNotFoundError(
+            f"Intent model not found at {path}. Run '.venv/bin/python scripts/train_nlp.py'."
+        )
     try:
         with path.open("rb") as artifact:
             model = pickle.load(artifact)
-    except (AttributeError, EOFError, OSError, pickle.UnpicklingError, ValueError):
-        model = build_model()
-        save_model(model, path)
+    except (
+        AttributeError,
+        EOFError,
+        OSError,
+        pickle.UnpicklingError,
+        ValueError,
+    ) as exc:
+        raise ValueError(f"Invalid intent model artifact: {path}") from exc
     if not isinstance(model, Pipeline) or not hasattr(model, "predict_proba"):
         raise ValueError(f"Invalid intent model artifact: {path}")
     return model
