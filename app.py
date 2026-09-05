@@ -12,6 +12,7 @@ from dialogue.manager import DialogueManager
 from routes.admin import bp as admin_bp
 from routes.health import bp as health_bp
 from routes.sms import register as register_sms
+from routes.webhook import bp as webhook_bp
 from routes.whatsapp import register as register_whatsapp
 from services.message_service import MessageService
 from utils.validators import validate_message
@@ -59,6 +60,7 @@ def create_app(test_config: dict | None = None) -> Flask:
 
     app.register_blueprint(health_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(webhook_bp)
     app.register_blueprint(register_sms(service))
     app.register_blueprint(register_whatsapp(service))
     return app

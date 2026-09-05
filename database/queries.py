@@ -64,6 +64,14 @@ class MySQLRepository:
             raise RuntimeError("User could not be created")
         return _user(row)
 
+    def get_user_by_phone(self, phone_number: str) -> User | None:
+        with get_cursor() as cursor:
+            cursor.execute(
+                "SELECT * FROM users WHERE phone_number = %s", (phone_number,)
+            )
+            row = cursor.fetchone()
+        return _user(row) if row else None
+
     def update_user_language(self, phone_number: str, language: str) -> User:
         with get_cursor() as cursor:
             cursor.execute(
@@ -87,6 +95,77 @@ class MySQLRepository:
                 (name, due_date, user_id),
             )
         return self.get_user_by_id(user_id)
+
+    def register_user(
+        self,
+        phone_number: str,
+        name: str,
+        language: str,
+        due_date: date,
+        channel: str,
+    ) -> tuple[User, PregnancyProfile]:
+        """Create or update a user record and their pregnancy profile atomically.
+
+        If a user with *phone_number* already exists their name, language and
+        due_date are updated in-place.  The pregnancy profile is inserted as a
+        new row so a history is preserved.
+
+        Returns (User, PregnancyProfile).
+        """
+        with get_cursor() as cursor:
+            # Upsert the user row
+            cursor.execute(
+                """INSERT INTO users (phone_number, name, preferred_language, due_date)
+                   VALUES (%s, %s, %s, %s)
+                   ON DUPLICATE KEY UPDATE
+                       name             = VALUES(name),
+                       preferred_language = VALUES(preferred_language),
+                       due_date         = VALUES(due_date)
+                """,
+                (phone_number, name, language, due_date),
+            )
+            cursor.execute(
+                "SELECT * FROM users WHERE phone_number = %s", (phone_number,)
+            )
+            user_row = cursor.fetchone()
+            if not user_row:
+                raise RuntimeError("User could not be registered")
+            user = _user(user_row)
+
+            # Insert a new pregnancy profile
+            cursor.execute(
+                """INSERT INTO pregnancy_profiles (user_id, due_date)
+                   VALUES (%s, %s)
+                """,
+                (user.id, due_date),
+            )
+            profile_id = cursor.lastrowid
+            cursor.execute(
+                "SELECT * FROM pregnancy_profiles WHERE id = %s", (profile_id,)
+            )
+            profile_row = cursor.fetchone()
+
+            # Record the user's preferred channel
+            cursor.execute(
+                """INSERT INTO user_channels (user_id, channel_code, address, is_primary)
+                   VALUES (%s, %s, %s, TRUE)
+                   ON DUPLICATE KEY UPDATE is_primary = TRUE
+                """,
+                (user.id, channel, phone_number),
+            )
+
+        profile = PregnancyProfile(
+            profile_row["id"],
+            profile_row["user_id"],
+            profile_row.get("last_menstrual_period"),
+            profile_row.get("due_date"),
+            profile_row.get("gravida"),
+            profile_row.get("parity"),
+            profile_row.get("notes"),
+            profile_row.get("created_at"),
+            profile_row.get("updated_at"),
+        )
+        return user, profile
 
     def save_pregnancy_profile(self, profile: PregnancyProfile) -> PregnancyProfile:
         with get_cursor() as cursor:
@@ -341,6 +420,10 @@ class InMemoryRepository:
         self.escalations: list[Escalation] = []
         self._next_id = 1
 
+    # ------------------------------------------------------------------
+    # User helpers
+    # ------------------------------------------------------------------
+
     def get_or_create_user(self, phone_number: str, language: str = "en") -> User:
         with self._lock:
             if phone_number in self.users:
@@ -349,6 +432,9 @@ class InMemoryRepository:
             self._next_id += 1
             self.users[phone_number] = user
             return user
+
+    def get_user_by_phone(self, phone_number: str) -> User | None:
+        return self.users.get(phone_number)
 
     def get_user_by_id(self, user_id: int) -> User | None:
         return next((user for user in self.users.values() if user.id == user_id), None)
@@ -368,6 +454,36 @@ class InMemoryRepository:
         user = User(old.id, old.phone_number, name, old.language, due_date)
         self.users[user.phone_number] = user
         return user
+
+    def register_user(
+        self,
+        phone_number: str,
+        name: str,
+        language: str,
+        due_date: date,
+        channel: str,  # noqa: ARG002 — stored via user_channels in MySQL; ignored in memory
+    ) -> tuple[User, PregnancyProfile]:
+        """Create or update user + pregnancy profile atomically."""
+        with self._lock:
+            existing = self.users.get(phone_number)
+            user_id = existing.id if existing else self._next_id
+            if not existing:
+                self._next_id += 1
+            user = User(user_id, phone_number, name, language, due_date)
+            self.users[phone_number] = user
+
+        profile = PregnancyProfile(
+            id=len(self.profiles) + 1,
+            user_id=user_id,
+            due_date=due_date,
+        )
+        with self._lock:
+            self.profiles.append(profile)
+        return user, profile
+
+    # ------------------------------------------------------------------
+    # Pregnancy profile helpers
+    # ------------------------------------------------------------------
 
     def save_pregnancy_profile(self, profile: PregnancyProfile) -> PregnancyProfile:
         saved = PregnancyProfile(
@@ -393,6 +509,10 @@ class InMemoryRepository:
             ),
             None,
         )
+
+    # ------------------------------------------------------------------
+    # Conversation / message helpers
+    # ------------------------------------------------------------------
 
     def get_or_create_conversation(
         self, user_id: int | None, channel: str
@@ -446,6 +566,10 @@ class InMemoryRepository:
             if message.conversation_id == conversation_id
         ][:limit]
 
+    # ------------------------------------------------------------------
+    # Appointment helpers
+    # ------------------------------------------------------------------
+
     def add_appointment(
         self,
         phone_number: str,
@@ -481,6 +605,10 @@ class InMemoryRepository:
             for a in self.appointments
         ]
 
+    # ------------------------------------------------------------------
+    # Reminder helpers
+    # ------------------------------------------------------------------
+
     def create_reminder(self, reminder: Reminder) -> Reminder:
         saved = Reminder(
             reminder.id or len(self.reminders) + 1,
@@ -493,6 +621,10 @@ class InMemoryRepository:
         )
         self.reminders.append(saved)
         return saved
+
+    # ------------------------------------------------------------------
+    # Escalation helpers
+    # ------------------------------------------------------------------
 
     def create_escalation(self, escalation: Escalation) -> Escalation:
         saved = Escalation(
