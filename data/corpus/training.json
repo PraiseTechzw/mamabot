@@ -1,0 +1,252 @@
+[
+  { "text": "Hello MamaBot", "intent": "general_greeting", "language": "en" },
+  {
+    "text": "Hi, good morning",
+    "intent": "general_greeting",
+    "language": "en"
+  },
+  { "text": "Good afternoon", "intent": "general_greeting", "language": "en" },
+  {
+    "text": "I need an antenatal appointment reminder",
+    "intent": "appointment_reminder",
+    "language": "en"
+  },
+  {
+    "text": "When is my next clinic visit?",
+    "intent": "appointment_reminder",
+    "language": "en"
+  },
+  {
+    "text": "Please remind me about my checkup",
+    "intent": "appointment_reminder",
+    "language": "en"
+  },
+  {
+    "text": "I have heavy bleeding during pregnancy",
+    "intent": "danger_sign_query",
+    "language": "en"
+  },
+  {
+    "text": "What should I do about severe abdominal pain?",
+    "intent": "danger_sign_query",
+    "language": "en"
+  },
+  {
+    "text": "I am having a seizure and need urgent help",
+    "intent": "danger_sign_query",
+    "language": "en"
+  },
+  {
+    "text": "What food is healthy during pregnancy?",
+    "intent": "nutrition_information",
+    "language": "en"
+  },
+  {
+    "text": "Tell me what I should eat for good nutrition",
+    "intent": "nutrition_information",
+    "language": "en"
+  },
+  {
+    "text": "Can I get advice about iron and vitamins?",
+    "intent": "nutrition_information",
+    "language": "en"
+  },
+  {
+    "text": "Change my language to Shona",
+    "intent": "language_switch",
+    "language": "en"
+  },
+  {
+    "text": "I would like to use Ndebele",
+    "intent": "language_switch",
+    "language": "en"
+  },
+  {
+    "text": "Please speak English",
+    "intent": "language_switch",
+    "language": "en"
+  },
+  {
+    "text": "I need to speak to a nurse",
+    "intent": "nurse_escalation",
+    "language": "en"
+  },
+  {
+    "text": "Please connect me with a midwife",
+    "intent": "nurse_escalation",
+    "language": "en"
+  },
+  {
+    "text": "I need urgent help from a health worker",
+    "intent": "nurse_escalation",
+    "language": "en"
+  },
+  { "text": "Mhoro MamaBot", "intent": "general_greeting", "language": "sn" },
+  {
+    "text": "Makadini mangwanani",
+    "intent": "general_greeting",
+    "language": "sn"
+  },
+  {
+    "text": "Masikati, makadini",
+    "intent": "general_greeting",
+    "language": "sn"
+  },
+  {
+    "text": "Ndinoda chiyeuchidzo chemusangano wechipatara",
+    "intent": "appointment_reminder",
+    "language": "sn"
+  },
+  {
+    "text": "Musangano wangu weANC uri riini?",
+    "intent": "appointment_reminder",
+    "language": "sn"
+  },
+  {
+    "text": "Ndibatsirei kuyeuka kushanya kukiriniki",
+    "intent": "appointment_reminder",
+    "language": "sn"
+  },
+  {
+    "text": "Ndiri kubuda ropa zvakanyanya",
+    "intent": "danger_sign_query",
+    "language": "sn"
+  },
+  {
+    "text": "Ndiri kunzwa kurwadziwa kukuru mudumbu",
+    "intent": "danger_sign_query",
+    "language": "sn"
+  },
+  {
+    "text": "Ndezvipi zviratidzo zvine ngozi?",
+    "intent": "danger_sign_query",
+    "language": "sn"
+  },
+  {
+    "text": "Ndedzipi zvokudya zvakanaka pamuviri?",
+    "intent": "nutrition_information",
+    "language": "sn"
+  },
+  {
+    "text": "Ndodyei kuti ndiwane kudya kunovaka muviri?",
+    "intent": "nutrition_information",
+    "language": "sn"
+  },
+  {
+    "text": "Ndinoda ruzivo rwezvokudya nemavitamini",
+    "intent": "nutrition_information",
+    "language": "sn"
+  },
+  {
+    "text": "Chinja mutauro uende kuShona",
+    "intent": "language_switch",
+    "language": "sn"
+  },
+  {
+    "text": "Ndinoda kutaura Chirungu",
+    "intent": "language_switch",
+    "language": "sn"
+  },
+  {
+    "text": "Sarudza Ndebele semutauro wangu",
+    "intent": "language_switch",
+    "language": "sn"
+  },
+  {
+    "text": "Ndinoda kutaura nemukoti",
+    "intent": "nurse_escalation",
+    "language": "sn"
+  },
+  {
+    "text": "Ndibatsirei ndibate nyamukuta",
+    "intent": "nurse_escalation",
+    "language": "sn"
+  },
+  {
+    "text": "Pane chimbichimbi, ndinoda rubatsiro",
+    "intent": "nurse_escalation",
+    "language": "sn"
+  },
+  {
+    "text": "Sawubona MamaBot",
+    "intent": "general_greeting",
+    "language": "nd"
+  },
+  { "text": "Unjani, ekuseni", "intent": "general_greeting", "language": "nd" },
+  { "text": "Salibonani", "intent": "general_greeting", "language": "nd" },
+  {
+    "text": "Ngifuna isikhumbuzo somhlangano womtholampilo",
+    "intent": "appointment_reminder",
+    "language": "nd"
+  },
+  {
+    "text": "Umhlangano wami wokuhlolwa unini?",
+    "intent": "appointment_reminder",
+    "language": "nd"
+  },
+  {
+    "text": "Ngikhumbuze ukuya esibhedlela",
+    "intent": "appointment_reminder",
+    "language": "nd"
+  },
+  {
+    "text": "Ngopha kakhulu ngesikhathi sokukhulelwa",
+    "intent": "danger_sign_query",
+    "language": "nd"
+  },
+  {
+    "text": "Ngizwa ubuhlungu obukhulu esiswini",
+    "intent": "danger_sign_query",
+    "language": "nd"
+  },
+  {
+    "text": "Yiziphi izimpawu eziyingozi?",
+    "intent": "danger_sign_query",
+    "language": "nd"
+  },
+  {
+    "text": "Kuyini ukudla okuhle ngesikhathi sokukhulelwa?",
+    "intent": "nutrition_information",
+    "language": "nd"
+  },
+  {
+    "text": "Ngidle ini ukuze ngibe lokudla okunempilo?",
+    "intent": "nutrition_information",
+    "language": "nd"
+  },
+  {
+    "text": "Ngidinga ulwazi ngamavitamini lensimbi",
+    "intent": "nutrition_information",
+    "language": "nd"
+  },
+  {
+    "text": "Guqula ulimi lube isiNdebele",
+    "intent": "language_switch",
+    "language": "nd"
+  },
+  {
+    "text": "Ngifuna ukukhuluma isiNgisi",
+    "intent": "language_switch",
+    "language": "nd"
+  },
+  {
+    "text": "Khetha isiShona njengolimi lwami",
+    "intent": "language_switch",
+    "language": "nd"
+  },
+  {
+    "text": "Ngifuna ukukhuluma lomhlengikazi",
+    "intent": "nurse_escalation",
+    "language": "nd"
+  },
+  {
+    "text": "Ngicela ungixhumanise lombelethisi",
+    "intent": "nurse_escalation",
+    "language": "nd"
+  },
+  {
+    "text": "Ngidinga usizo oluphuthumayo kumsebenzi wezempilo",
+    "intent": "nurse_escalation",
+    "language": "nd"
+  }
+]

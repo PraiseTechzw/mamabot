@@ -1,0 +1,32 @@
+[
+  {
+    "text": "My name is Tariro",
+    "entities": [[0, 15, "PERSON"]],
+    "language": "en"
+  },
+  {
+    "text": "Zita rangu ndiRudo",
+    "entities": [[0, 18, "PERSON"]],
+    "language": "sn"
+  },
+  {
+    "text": "Ibizo lami nguNompilo",
+    "entities": [[0, 21, "PERSON"]],
+    "language": "nd"
+  },
+  {
+    "text": "My appointment is on 2027-03-15",
+    "entities": [[23, 33, "DATE"]],
+    "language": "en"
+  },
+  {
+    "text": "Zuva rekuzvara ndi 2027-04-20",
+    "entities": [[21, 31, "DATE"]],
+    "language": "sn"
+  },
+  {
+    "text": "Umhlangano ungomhla ka 2027-05-12",
+    "entities": [[24, 34, "DATE"]],
+    "language": "nd"
+  }
+]

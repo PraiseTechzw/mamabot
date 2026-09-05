@@ -20,7 +20,6 @@ from database.queries import InMemoryRepository
 from dialogue.registration import RegistrationHandler
 from dialogue.state import ConversationSession, ConversationState
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -356,7 +355,7 @@ class TestRegistrationHandler:
         session.draft.due_date = _today() + timedelta(days=100)
         session.draft.channel = "test"
 
-        reply, done = handler.handle("name", session, channel="test")
+        _reply, done = handler.handle("name", session, channel="test")
         assert not done
         assert session.state == ConversationState.REGISTRATION_NAME
 

@@ -183,13 +183,25 @@ LANGUAGE_LABELS: dict[str, dict[str, str]] = {
 
 CHANNEL_LABELS: dict[str, dict[str, str]] = {
     "en": {"sms": "SMS", "whatsapp": "WhatsApp", "browser": "Browser", "test": "Test"},
-    "sn": {"sms": "SMS", "whatsapp": "WhatsApp", "browser": "Browser", "test": "Bvunzo"},
-    "nd": {"sms": "SMS", "whatsapp": "WhatsApp", "browser": "Ibhrawuza", "test": "Uhlelo"},
+    "sn": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "browser": "Browser",
+        "test": "Bvunzo",
+    },
+    "nd": {
+        "sms": "SMS",
+        "whatsapp": "WhatsApp",
+        "browser": "Ibhrawuza",
+        "test": "Uhlelo",
+    },
 }
 
 
 def response_for(language: str, intent: str, **kwargs: object) -> str:
     lang = language if language in RESPONSES else "en"
+    if intent == "nurse_escalation":
+        intent = "escalation_to_nurse"
     template = RESPONSES[lang].get(intent, RESPONSES[lang]["fallback"])
     if kwargs:
         try:

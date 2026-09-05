@@ -1,0 +1,92 @@
+[
+  {
+    "text": "Good evening MamaBot",
+    "intent": "general_greeting",
+    "language": "en"
+  },
+  {
+    "text": "I want to schedule my next checkup",
+    "intent": "appointment_reminder",
+    "language": "en"
+  },
+  {
+    "text": "There is blood and I feel very weak",
+    "intent": "danger_sign_query",
+    "language": "en"
+  },
+  {
+    "text": "Is it safe to drink more water and eat beans?",
+    "intent": "nutrition_information",
+    "language": "en"
+  },
+  {
+    "text": "How do I switch to Ndebele?",
+    "intent": "language_switch",
+    "language": "en"
+  },
+  {
+    "text": "Call a nurse to help me",
+    "intent": "nurse_escalation",
+    "language": "en"
+  },
+  {
+    "text": "Manheru, MamaBot",
+    "intent": "general_greeting",
+    "language": "sn"
+  },
+  {
+    "text": "Ndinoda kuziva zuva rekushanya kukiriniki",
+    "intent": "appointment_reminder",
+    "language": "sn"
+  },
+  {
+    "text": "Musoro unorwadza uye ndiri kuona ropa",
+    "intent": "danger_sign_query",
+    "language": "sn"
+  },
+  {
+    "text": "Ndingadye bhinzi nemichero here?",
+    "intent": "nutrition_information",
+    "language": "sn"
+  },
+  {
+    "text": "Chinja mutauro kuNdebele",
+    "intent": "language_switch",
+    "language": "sn"
+  },
+  {
+    "text": "Ndinoda rubatsiro rwemukoti",
+    "intent": "nurse_escalation",
+    "language": "sn"
+  },
+  {
+    "text": "Linjani, MamaBot",
+    "intent": "general_greeting",
+    "language": "nd"
+  },
+  {
+    "text": "Ngifuna ukwazi usuku lokuvakasha emtholampilo",
+    "intent": "appointment_reminder",
+    "language": "nd"
+  },
+  {
+    "text": "Ngiphefumula nzima futhi ngopha",
+    "intent": "danger_sign_query",
+    "language": "nd"
+  },
+  {
+    "text": "Yikuphi ukudla okunempilo kimi?",
+    "intent": "nutrition_information",
+    "language": "nd"
+  },
+  {
+    "text": "Guqula ulimi lube isiNgisi",
+    "intent": "language_switch",
+    "language": "nd"
+  },
+  {
+    "text": "Ngidinga ukukhuluma lomhlengikazi khathesi",
+    "intent": "nurse_escalation",
+    "language": "nd"
+  }
+]

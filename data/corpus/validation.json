@@ -1,0 +1,92 @@
+[
+  {
+    "text": "Hey, how are you?",
+    "intent": "general_greeting",
+    "language": "en"
+  },
+  {
+    "text": "Can you remind me of my ANC visit?",
+    "intent": "appointment_reminder",
+    "language": "en"
+  },
+  {
+    "text": "I have blurred vision and a bad headache",
+    "intent": "danger_sign_query",
+    "language": "en"
+  },
+  {
+    "text": "What meals should I eat while pregnant?",
+    "intent": "nutrition_information",
+    "language": "en"
+  },
+  {
+    "text": "Use Shona when you reply",
+    "intent": "language_switch",
+    "language": "en"
+  },
+  {
+    "text": "Please let me talk to a nurse",
+    "intent": "nurse_escalation",
+    "language": "en"
+  },
+  {
+    "text": "Mhoro, makadini?",
+    "intent": "general_greeting",
+    "language": "sn"
+  },
+  {
+    "text": "Rangarirai musangano wangu",
+    "intent": "appointment_reminder",
+    "language": "sn"
+  },
+  {
+    "text": "Ndiri kurwadziwa uye kubuda ropa",
+    "intent": "danger_sign_query",
+    "language": "sn"
+  },
+  {
+    "text": "Ndinoda kuziva nezvekudya pamuviri",
+    "intent": "nutrition_information",
+    "language": "sn"
+  },
+  {
+    "text": "Shandurai mutauro kuChirungu",
+    "intent": "language_switch",
+    "language": "sn"
+  },
+  {
+    "text": "Batanidzai nemukoti",
+    "intent": "nurse_escalation",
+    "language": "sn"
+  },
+  {
+    "text": "Sawubona, unjani?",
+    "intent": "general_greeting",
+    "language": "nd"
+  },
+  {
+    "text": "Ngikhumbuze usuku lomhlangano",
+    "intent": "appointment_reminder",
+    "language": "nd"
+  },
+  {
+    "text": "Ngopha futhi ngizwa ubuhlungu",
+    "intent": "danger_sign_query",
+    "language": "nd"
+  },
+  {
+    "text": "Ngifuna ukwazi ngokudla ngesikhathi sokukhulelwa",
+    "intent": "nutrition_information",
+    "language": "nd"
+  },
+  {
+    "text": "Sebenzisa isiShona",
+    "intent": "language_switch",
+    "language": "nd"
+  },
+  {
+    "text": "Ngicela ngikhulume lomhlengikazi",
+    "intent": "nurse_escalation",
+    "language": "nd"
+  }
+]

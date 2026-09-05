@@ -74,13 +74,19 @@ class DialogueManager:
 
         escalation = analysis.intent.intent in {
             "danger_sign_query",
-            "escalation_to_nurse",
+            "nurse_escalation",
         }
+        response_intent = (
+            "escalation_to_nurse"
+            if analysis.intent.intent == "nurse_escalation"
+            else analysis.intent.intent
+        )
         text = response_for(
             response_language,
             (
-                analysis.intent.intent
-                if analysis.intent.confidence >= 0.40
+                response_intent
+                if not analysis.intent.low_confidence
+                or analysis.intent.intent == "danger_sign_query"
                 else "fallback"
             ),
         )

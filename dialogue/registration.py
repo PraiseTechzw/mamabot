@@ -16,11 +16,13 @@ Typical call sequence::
         user_text = input()
         reply, done = handler.handle(user_text, session, phone_number="0771234567", channel="sms")
 """
+
 from __future__ import annotations
 
 import logging
 
 from dialogue.state import ConversationSession, ConversationState
+from nlp.entity_extractor import extract_entities
 from responses.catalog import (
     CHANNEL_LABELS,
     LANGUAGE_LABELS,
@@ -119,7 +121,15 @@ class RegistrationHandler:
     def should_start(self, text: str, session: ConversationSession) -> bool:
         """Return True if *text* should trigger a new registration flow."""
         lower = text.strip().lower()
-        keywords = {"register", "registration", "signup", "sign up", "join", "rejistaara", "bhalisa"}
+        keywords = {
+            "register",
+            "registration",
+            "signup",
+            "sign up",
+            "join",
+            "rejistaara",
+            "bhalisa",
+        }
         return session.state == ConversationState.IDLE and any(
             kw in lower for kw in keywords
         )
@@ -221,9 +231,11 @@ class RegistrationHandler:
         channel: str,
     ) -> tuple[str, bool]:
         lang = _lang(session)
-        if not validate_name(text):
+        extracted_name = extract_entities(text).person_name
+        name = extracted_name or text
+        if not validate_name(name):
             return response_for(lang, "reg_invalid_name"), False
-        session.draft.name = text.strip()
+        session.draft.name = name.strip()
 
         # If we were correcting a specific field, return to confirmation
         if session.draft.correcting:
@@ -277,7 +289,10 @@ class RegistrationHandler:
             return _build_confirm_prompt(session), False
 
         session.state = ConversationState.REGISTRATION_DUE_DATE
-        return response_for(new_lang, "reg_ask_due_date", example=_DUE_DATE_EXAMPLE), False
+        return (
+            response_for(new_lang, "reg_ask_due_date", example=_DUE_DATE_EXAMPLE),
+            False,
+        )
 
     def _collect_due_date(
         self,
@@ -285,10 +300,12 @@ class RegistrationHandler:
         session: ConversationSession,
     ) -> tuple[str, bool]:
         lang = _lang(session)
-        ok, reason, parsed = validate_due_date(text)
+        extracted = extract_entities(text)
+        date_text = extracted.due_date or extracted.date or text
+        ok, reason, parsed = validate_due_date(date_text)
         if not ok:
             return response_for(lang, "reg_invalid_due_date", reason=reason), False
-        session.draft.due_date_raw = text.strip()
+        session.draft.due_date_raw = date_text.strip()
         session.draft.due_date = parsed
 
         if session.draft.correcting:
@@ -358,10 +375,22 @@ class RegistrationHandler:
 
         field_labels: dict[str, str] = {
             "name": {"en": "name", "sn": "zita", "nd": "ibizo"}.get(lang, "name"),
-            "phone": {"en": "phone number", "sn": "nhamba yefoni", "nd": "inombolo yefoni"}.get(lang, "phone number"),
-            "language": {"en": "language", "sn": "mutauro", "nd": "ulimi"}.get(lang, "language"),
-            "due_date": {"en": "expected delivery date", "sn": "zuva rekuzvara", "nd": "usuku lokuzala"}.get(lang, "due date"),
-            "channel": {"en": "channel", "sn": "nzira", "nd": "indlela"}.get(lang, "channel"),
+            "phone": {
+                "en": "phone number",
+                "sn": "nhamba yefoni",
+                "nd": "inombolo yefoni",
+            }.get(lang, "phone number"),
+            "language": {"en": "language", "sn": "mutauro", "nd": "ulimi"}.get(
+                lang, "language"
+            ),
+            "due_date": {
+                "en": "expected delivery date",
+                "sn": "zuva rekuzvara",
+                "nd": "usuku lokuzala",
+            }.get(lang, "due date"),
+            "channel": {"en": "channel", "sn": "nzira", "nd": "indlela"}.get(
+                lang, "channel"
+            ),
         }
         label = field_labels.get(field, field)
 
@@ -380,15 +409,23 @@ class RegistrationHandler:
     # Commit
     # ------------------------------------------------------------------
 
-    def _commit(
-        self, session: ConversationSession
-    ) -> tuple[str, bool]:
+    def _commit(self, session: ConversationSession) -> tuple[str, bool]:
         lang = _lang(session)
         draft = session.draft
 
         # Defensive: ensure we have all required fields
-        if not all([draft.name, draft.phone_number, draft.language, draft.due_date, draft.channel]):
-            log.warning("Registration commit attempted with incomplete draft: %s", draft)
+        if not all(
+            [
+                draft.name,
+                draft.phone_number,
+                draft.language,
+                draft.due_date,
+                draft.channel,
+            ]
+        ):
+            log.warning(
+                "Registration commit attempted with incomplete draft: %s", draft
+            )
             return response_for(lang, "reg_error"), False
 
         try:
@@ -414,6 +451,7 @@ class RegistrationHandler:
 # ------------------------------------------------------------------
 # Internal helpers
 # ------------------------------------------------------------------
+
 
 def _build_confirm_prompt(session: ConversationSession) -> str:
     lang = _lang(session)
