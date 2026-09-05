@@ -1,4 +1,5 @@
 """Conversation state machine including multi-step registration flow."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -45,10 +46,10 @@ class RegistrationDraft:
 
     name: str | None = None
     phone_number: str | None = None
-    language: str | None = None          # "en" | "sn" | "nd"
-    due_date_raw: str | None = None      # user-supplied raw text, validated later
-    due_date: object | None = None       # datetime.date once validated
-    channel: str | None = None           # "sms" | "whatsapp" | "browser" | "test"
+    language: str | None = None  # "en" | "sn" | "nd"
+    due_date_raw: str | None = None  # user-supplied raw text, validated later
+    due_date: object | None = None  # datetime.date once validated
+    channel: str | None = None  # "sms" | "whatsapp" | "browser" | "test"
     # Tracks which field the user last asked to correct
     correcting: str | None = None
 
@@ -72,3 +73,15 @@ class ConversationSession:
     def reset(self) -> None:
         self.state = ConversationState.IDLE
         self.draft = RegistrationDraft()
+
+
+@dataclass
+class DialogueSession:
+    """Small transport-neutral state for non-registration follow-up turns."""
+
+    state: ConversationState = ConversationState.IDLE
+    language: str = "en"
+    user_id: int | None = None
+
+    def reset(self) -> None:
+        self.state = ConversationState.IDLE

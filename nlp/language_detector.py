@@ -99,6 +99,12 @@ def detect_language_result(text: str, preferred: str = "en") -> LanguageDetectio
         or confidence < 0.58
         or (best_score - second_score < 0.75 and len(tokens) < 5)
     )
+    generic_greeting = (
+        len(tokens) <= 2 and best_language == "en" and not matched[preferred]
+    )
+    if generic_greeting and preferred != "en":
+        best_language = preferred
+        uncertain = True
     if best_score == 0 or (
         uncertain
         and preferred in scores
