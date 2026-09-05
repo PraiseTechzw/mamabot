@@ -10,6 +10,8 @@ from flask import Flask, jsonify, request, send_from_directory
 from config import settings
 from database.queries import repository
 from dialogue.manager import DialogueManager
+from messaging.sms_provider import MockSmsPopProvider, SmsPopProvider
+from messaging.whatsapp_provider import MockWhatsAppProvider, WhatsAppProvider
 from routes.admin import bp as admin_bp
 from routes.health import bp as health_bp
 from routes.sms import register as register_sms
@@ -66,8 +68,25 @@ def create_app(test_config: dict | None = None) -> Flask:
     app.register_blueprint(health_bp)
     app.register_blueprint(admin_bp)
     app.register_blueprint(webhook_bp)
-    app.register_blueprint(register_sms(service))
-    app.register_blueprint(register_whatsapp(service))
+    sms_provider = app.config.get("SMS_PROVIDER")
+    if sms_provider is None:
+        sms_provider = (
+            SmsPopProvider(settings.smspop_api_key, settings.smspop_sender_id)
+            if settings.smspop_api_key
+            else MockSmsPopProvider()
+        )
+    app.register_blueprint(register_sms(service, sms_provider))
+    whatsapp_provider = app.config.get("WHATSAPP_PROVIDER_INSTANCE")
+    if whatsapp_provider is None:
+        whatsapp_provider = (
+            WhatsAppProvider(
+                settings.whatsapp_access_token,
+                settings.whatsapp_phone_number_id,
+            )
+            if settings.whatsapp_provider.lower() not in {"console", "mock", ""}
+            else MockWhatsAppProvider()
+        )
+    app.register_blueprint(register_whatsapp(service, whatsapp_provider))
     return app
 
 

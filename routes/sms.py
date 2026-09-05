@@ -1,20 +1,44 @@
 from flask import Blueprint, jsonify, request
 
-from utils.validators import validate_message
+from messaging.sms_provider import (
+    MockSmsPopProvider,
+    SmsPopConfigurationError,
+    SmsPopDeliveryError,
+)
 
 
-def register(service):
+def register(service, provider=None):
     bp = Blueprint("sms", __name__, url_prefix="/sms")
+    provider = provider or MockSmsPopProvider()
 
     @bp.post("/inbound")
     def inbound():
         data = request.get_json(silent=True) or request.form
         try:
-            text = validate_message(data.get("message", ""))
-        except ValueError as exc:
+            inbound = provider.normalize_inbound(dict(data))
+        except (TypeError, ValueError) as exc:
             return jsonify({"error": str(exc)}), 400
-        sender = str(data.get("from", "sms-user"))
-        reply = service.handle(text, sender, "sms")
-        return jsonify({"text": reply.text, "intent": reply.intent, "escalation": reply.escalation})
+        try:
+            reply = service.handle(inbound.text, inbound.sender, inbound.channel)
+            outbound = provider.send(inbound.sender, reply.text)
+        except (
+            SmsPopConfigurationError,
+            SmsPopDeliveryError,
+            ValueError,
+            RuntimeError,
+        ):
+            return (
+                jsonify({"error": "The SMS service could not deliver the response."}),
+                502,
+            )
+        return jsonify(
+            {
+                "recipient": outbound.recipient,
+                "text": outbound.text,
+                "channel": outbound.channel,
+                "intent": reply.intent,
+                "escalation": reply.escalation,
+            }
+        )
 
     return bp

@@ -8,6 +8,8 @@ Create a virtual environment, install `requirements.txt`, optionally copy `.env.
 
 MySQL is the production persistence target and `sql/schema.sql` contains the schema. The current local mode uses an in-memory repository so the test interface remains usable when MySQL is not running. SMSPOP is enabled only when `SMSPOP_API_KEY` is configured. WhatsApp is exposed through a provider-neutral interface, with a console adapter for local development.
 
+The SMSPOP adapter intentionally does not guess a vendor endpoint or payload because the current SMSPOP API documentation is not included in this repository. Supply a documentation-specific `send_transport` to `SmsPopProvider`; local development and tests use `MockSmsPopProvider`.
+
 To initialize MySQL, create the database named by `MYSQL_DATABASE`, set `DATABASE_BACKEND=mysql` and the `MYSQL_*` values in `.env`, then run `python scripts/seed_database.py`. The initializer applies `sql/schema.sql`, `sql/indexes.sql`, and safe development seed records. Credentials are read only from environment variables.
 
 ANC reminders run at `REMINDER_HOUR` and `REMINDER_MINUTE` in `REMINDER_TIMEZONE` when `ENABLE_REMINDER_SCHEDULER=true`. For a manual development trigger, run `python scripts/run_reminders.py --date YYYY-MM-DD`.

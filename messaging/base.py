@@ -1,4 +1,5 @@
 """Provider-independent messaging interfaces."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -22,6 +23,7 @@ class InboundMessage:
 
 class MessageProvider(Protocol):
     channel: str
+
     def send(self, recipient: str, text: str) -> OutboundMessage: ...
 
     def normalize_inbound(self, payload: Any) -> InboundMessage: ...
