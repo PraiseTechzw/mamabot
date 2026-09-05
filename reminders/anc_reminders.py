@@ -1,14 +1,19 @@
 """ANC reminder job; delivery is injected through a provider."""
+
 from datetime import date, datetime
 from zoneinfo import ZoneInfo
 
 from database.queries import repository as default_repository
 
 
-def send_due_reminders(provider, on_date: date | None = None, repository=default_repository) -> int:
+def send_due_reminders(
+    provider, on_date: date | None = None, repository=default_repository
+) -> int:
     sent = 0
-    for appointment in repository.due_appointments(on_date or datetime.now(ZoneInfo("Africa/Harare")).date()):
-        user = next((u for u in repository.users.values() if u.id == appointment.user_id), None)
+    for appointment in repository.due_appointments(
+        on_date or datetime.now(ZoneInfo("Africa/Harare")).date()
+    ):
+        user = repository.get_user_by_id(appointment.user_id)
         if not user:
             continue
         provider.send(

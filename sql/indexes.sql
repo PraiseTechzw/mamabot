@@ -1,0 +1,12 @@
+CREATE INDEX idx_users_language ON users (preferred_language);
+CREATE INDEX idx_user_channels_user ON user_channels (user_id, is_primary);
+CREATE INDEX idx_profiles_user ON pregnancy_profiles (user_id, updated_at);
+CREATE INDEX idx_conversations_user_status ON conversations (user_id, status, last_message_at);
+CREATE INDEX idx_messages_conversation_time ON messages (conversation_id, created_at, id);
+CREATE INDEX idx_messages_user_time ON messages (user_id, created_at);
+CREATE INDEX idx_appointments_due ON appointments (appointment_date, status, reminder_sent);
+CREATE INDEX idx_appointments_user ON appointments (user_id, appointment_date);
+CREATE INDEX idx_reminders_due ON reminders (scheduled_for, status);
+CREATE INDEX idx_reminders_user ON reminders (user_id, scheduled_for);
+CREATE INDEX idx_escalations_status ON escalations (status, created_at);
+CREATE INDEX idx_escalations_user ON escalations (user_id, created_at);

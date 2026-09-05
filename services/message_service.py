@@ -1,7 +1,21 @@
 """Transport-neutral message service."""
+
+from database.models import ConversationMessage
+from database.queries import repository
 from dialogue.manager import DialogueManager
 
 
 class MessageService:
-    def __init__(self, manager: DialogueManager): self.manager = manager
-    def handle(self, text: str, sender: str, channel: str = "browser", language: str = "en"): return self.manager.respond(text, sender, language, channel)
+    def __init__(self, manager: DialogueManager):
+        self.manager = manager
+
+    def handle(
+        self, text: str, sender: str, channel: str = "browser", language: str = "en"
+    ):
+        return self.manager.respond(text, sender, language, channel)
+
+    def save(self, message: ConversationMessage):
+        return repository.save_message(message)
+
+    def list_messages(self, conversation_id: int, limit: int = 100):
+        return repository.list_messages(conversation_id, limit)

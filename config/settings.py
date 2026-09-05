@@ -1,4 +1,5 @@
 """Application settings loaded from environment variables."""
+
 from __future__ import annotations
 
 import os
@@ -28,6 +29,7 @@ class Settings:
     mysql_database: str = os.getenv("MYSQL_DATABASE", "mamabot")
     mysql_user: str = os.getenv("MYSQL_USER", "mamabot")
     mysql_password: str = os.getenv("MYSQL_PASSWORD", "")
+    database_backend: str = os.getenv("DATABASE_BACKEND", "memory").strip().lower()
     smspop_base_url: str = os.getenv("SMSPOP_BASE_URL", "https://api.sms-pop.co.zw")
     smspop_api_key: str = os.getenv("SMSPOP_API_KEY", "")
     smspop_sender_id: str = os.getenv("SMSPOP_SENDER_ID", "MamaBot")
