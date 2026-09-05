@@ -10,6 +10,8 @@ MySQL is the production persistence target and `sql/schema.sql` contains the sch
 
 To initialize MySQL, create the database named by `MYSQL_DATABASE`, set `DATABASE_BACKEND=mysql` and the `MYSQL_*` values in `.env`, then run `python scripts/seed_database.py`. The initializer applies `sql/schema.sql`, `sql/indexes.sql`, and safe development seed records. Credentials are read only from environment variables.
 
+ANC reminders run at `REMINDER_HOUR` and `REMINDER_MINUTE` in `REMINDER_TIMEZONE` when `ENABLE_REMINDER_SCHEDULER=true`. For a manual development trigger, run `python scripts/run_reminders.py --date YYYY-MM-DD`.
+
 MamaBot provides general information and does not diagnose. Messages containing potential danger signs receive urgent escalation guidance rather than a diagnosis.
 
 ## Checks

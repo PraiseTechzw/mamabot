@@ -72,6 +72,7 @@ class Reminder:
     reminder_type: str = "appointment"
     status: str = "pending"
     sent_at: datetime | None = None
+    error_message: str | None = None
 
 
 @dataclass(frozen=True)

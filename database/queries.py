@@ -335,12 +335,13 @@ class MySQLRepository:
     def create_reminder(self, reminder: Reminder) -> Reminder:
         with get_cursor() as cursor:
             cursor.execute(
-                "INSERT INTO reminders (user_id, appointment_id, reminder_type, scheduled_for) VALUES (%s, %s, %s, %s)",
+                "INSERT INTO reminders (user_id, appointment_id, reminder_type, scheduled_for, status) VALUES (%s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE id = LAST_INSERT_ID(id)",
                 (
                     reminder.user_id,
                     reminder.appointment_id,
                     reminder.reminder_type,
                     reminder.scheduled_for,
+                    reminder.status,
                 ),
             )
             reminder_id = cursor.lastrowid
@@ -354,7 +355,37 @@ class MySQLRepository:
             row["reminder_type"],
             row["status"],
             row.get("sent_at"),
+            row.get("error_message"),
         )
+
+    def update_reminder_status(
+        self, reminder_id: int, status: str, error_message: str | None = None
+    ) -> None:
+        with get_cursor() as cursor:
+            cursor.execute(
+                "UPDATE reminders SET status = %s, sent_at = CASE WHEN %s = 'sent' THEN CURRENT_TIMESTAMP ELSE sent_at END, error_message = %s WHERE id = %s",
+                (status, status, error_message, reminder_id),
+            )
+
+    def get_user_channel(self, user_id: int) -> str:
+        with get_cursor() as cursor:
+            cursor.execute(
+                "SELECT channel_code FROM user_channels WHERE user_id = %s ORDER BY is_primary DESC, id LIMIT 1",
+                (user_id,),
+            )
+            row = cursor.fetchone()
+        return row["channel_code"] if row else "sms"
+
+    def reminder_was_sent(
+        self, appointment_id: int, reminder_type: str = "appointment"
+    ) -> bool:
+        with get_cursor() as cursor:
+            cursor.execute(
+                "SELECT status FROM reminders WHERE appointment_id = %s AND reminder_type = %s",
+                (appointment_id, reminder_type),
+            )
+            row = cursor.fetchone()
+        return bool(row and row["status"] == "sent")
 
     def create_health_worker(self, worker: HealthWorker) -> HealthWorker:
         with get_cursor() as cursor:
@@ -418,6 +449,7 @@ class InMemoryRepository:
         self.profiles: list[PregnancyProfile] = []
         self.reminders: list[Reminder] = []
         self.escalations: list[Escalation] = []
+        self.user_channels: dict[int, str] = {}
         self._next_id = 1
 
     # ------------------------------------------------------------------
@@ -431,6 +463,7 @@ class InMemoryRepository:
             user = User(self._next_id, phone_number, language=language)
             self._next_id += 1
             self.users[phone_number] = user
+            self.user_channels.setdefault(user.id or 0, "test")
             return user
 
     def get_user_by_phone(self, phone_number: str) -> User | None:
@@ -471,6 +504,7 @@ class InMemoryRepository:
                 self._next_id += 1
             user = User(user_id, phone_number, name, language, due_date)
             self.users[phone_number] = user
+            self.user_channels[user.id or 0] = channel
 
         profile = PregnancyProfile(
             id=len(self.profiles) + 1,
@@ -610,6 +644,17 @@ class InMemoryRepository:
     # ------------------------------------------------------------------
 
     def create_reminder(self, reminder: Reminder) -> Reminder:
+        existing = next(
+            (
+                item
+                for item in self.reminders
+                if item.appointment_id == reminder.appointment_id
+                and item.reminder_type == reminder.reminder_type
+            ),
+            None,
+        )
+        if existing:
+            return existing
         saved = Reminder(
             reminder.id or len(self.reminders) + 1,
             reminder.user_id,
@@ -618,9 +663,44 @@ class InMemoryRepository:
             reminder.reminder_type,
             reminder.status,
             reminder.sent_at,
+            reminder.error_message,
         )
         self.reminders.append(saved)
         return saved
+
+    def update_reminder_status(
+        self, reminder_id: int, status: str, error_message: str | None = None
+    ) -> None:
+        self.reminders = [
+            (
+                Reminder(
+                    item.id,
+                    item.user_id,
+                    item.scheduled_for,
+                    item.appointment_id,
+                    item.reminder_type,
+                    status,
+                    datetime.now(UTC) if status == "sent" else item.sent_at,
+                    error_message,
+                )
+                if item.id == reminder_id
+                else item
+            )
+            for item in self.reminders
+        ]
+
+    def get_user_channel(self, user_id: int) -> str:
+        return self.user_channels.get(user_id, "test")
+
+    def reminder_was_sent(
+        self, appointment_id: int, reminder_type: str = "appointment"
+    ) -> bool:
+        return any(
+            item.appointment_id == appointment_id
+            and item.reminder_type == reminder_type
+            and item.status == "sent"
+            for item in self.reminders
+        )
 
     # ------------------------------------------------------------------
     # Escalation helpers

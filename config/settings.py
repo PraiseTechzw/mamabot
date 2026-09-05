@@ -36,6 +36,8 @@ class Settings:
     nurse_phone_number: str = os.getenv("NURSE_PHONE_NUMBER", "")
     whatsapp_provider: str = os.getenv("WHATSAPP_PROVIDER", "console")
     reminder_timezone: str = os.getenv("REMINDER_TIMEZONE", "Africa/Harare")
+    reminder_hour: int = int(os.getenv("REMINDER_HOUR", "8"))
+    reminder_minute: int = int(os.getenv("REMINDER_MINUTE", "0"))
     enable_reminder_scheduler: bool = _as_bool(os.getenv("ENABLE_REMINDER_SCHEDULER"))
 
     @property

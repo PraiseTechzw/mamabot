@@ -92,7 +92,9 @@ CREATE TABLE IF NOT EXISTS reminders (
 	scheduled_for DATETIME NOT NULL,
 	status ENUM('pending', 'sent', 'failed', 'cancelled') NOT NULL DEFAULT 'pending',
 	sent_at DATETIME NULL,
+	error_message VARCHAR(500),
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	UNIQUE KEY uq_reminder_appointment_type (appointment_id, reminder_type),
 	CONSTRAINT fk_reminders_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
 	CONSTRAINT fk_reminders_appointment FOREIGN KEY (appointment_id) REFERENCES appointments(id) ON DELETE SET NULL
 ) ENGINE=InnoDB;
