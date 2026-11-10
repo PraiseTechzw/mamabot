@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MamaBot – Messages</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+:root{--blue:#1F4E79;--blue-mid:#2E74B5;--blue-light:#EBF3FB;--teal:#0D7C66;--teal-light:#E6F4F1;--amber:#92600A;--amber-light:#FEF3E2;--green:#166534;--green-light:#DCFCE7;--red:#991B1B;--red-light:#FEE2E2;--purple:#5B21B6;--purple-light:#EDE9FE;--text:#111827;--muted:#6B7280;--border:#E5E7EB;--bg:#F9FAFB;--card:#fff;--radius:10px;--shadow:0 1px 4px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);--nav-h:56px;}
+*{box-sizing:border-box;margin:0;padding:0;}html{-webkit-text-size-adjust:100%;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh;}
+nav{position:sticky;top:0;z-index:100;background:var(--blue);height:var(--nav-h);display:flex;align-items:center;padding:0 1rem;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.nav-brand{color:#fff;font-weight:700;font-size:1rem;text-decoration:none;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.nav-brand i{color:#93C5FD;}
+.nav-spacer{flex:1;}
+.nav-links{display:flex;gap:2px;}
+.nav-links a{color:rgba(255,255,255,.7);text-decoration:none;font-size:.78rem;font-weight:500;padding:6px 10px;border-radius:6px;display:flex;align-items:center;gap:5px;transition:all .15s;white-space:nowrap;}
+.nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.12);color:#fff;}
+.nav-links .chat-link{background:rgba(233,30,140,.2);color:#F9A8D4;}.nav-links .chat-link:hover{background:rgba(233,30,140,.35);color:#fff;}
+.hamburger{display:none;background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:6px;}
+@media(max-width:640px){.hamburger{display:flex;align-items:center;justify-content:center;}.nav-links{display:none;position:fixed;top:var(--nav-h);left:0;right:0;background:var(--blue);flex-direction:column;padding:.5rem;box-shadow:0 4px 12px rgba(0,0,0,.3);z-index:99;}.nav-links.open{display:flex;}.nav-links a{font-size:.9rem;padding:10px 14px;}}
+.page{max-width:1100px;margin:0 auto;padding:1.25rem 1rem;}
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:.75rem;margin-bottom:1.25rem;}
+.page-title{font-size:1.15rem;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:8px;}
+.filters{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;}
+select{padding:7px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:.78rem;background:var(--card);color:var(--text);outline:none;font-family:inherit;cursor:pointer;}
+select:focus{border-color:var(--blue-mid);}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:7px;font-size:.78rem;font-weight:600;cursor:pointer;border:none;text-decoration:none;transition:all .15s;font-family:inherit;}
+.btn-ghost{background:transparent;color:var(--blue);border:1.5px solid var(--border);}.btn-ghost:hover{border-color:var(--blue);background:var(--blue-light);}
+.mini-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem;margin-bottom:1rem;}
+@media(min-width:480px){.mini-stats{grid-template-columns:repeat(4,1fr);}}
+.mstat{background:var(--card);border-radius:8px;padding:.75rem;box-shadow:0 1px 4px rgba(0,0,0,.07);border-left:3px solid var(--blue);}
+.mstat.red{border-color:#DC2626;}.mstat.green{border-color:#16A34A;}
+.msv{font-size:1.4rem;font-weight:700;color:var(--blue);}.mstat.red .msv{color:#DC2626;}.mstat.green .msv{color:#16A34A;}
+.msl{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px;}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;font-size:.8rem;}
+th{background:var(--bg);color:var(--muted);font-weight:600;text-align:left;padding:.55rem .85rem;font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;}
+td{padding:.65rem .85rem;border-top:1px solid var(--border);vertical-align:middle;}
+tr:hover td{background:#FAFAFA;}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:20px;font-size:.68rem;font-weight:600;}
+.b-greeting{background:var(--blue-light);color:var(--blue);}.b-danger,.b-emergency{background:var(--red-light);color:var(--red);}
+.b-nutrition{background:var(--green-light);color:var(--green);}.b-clinic{background:var(--amber-light);color:var(--amber);}
+.b-newborn{background:var(--purple-light);color:var(--purple);}.b-hiv{background:var(--teal-light);color:var(--teal);}
+.b-fallback{background:#FEE2E2;color:#B91C1C;border:1px solid #FECACA;}.b-thanks,.b-labour,.b-pregnancy{background:var(--bg);color:var(--muted);border:1px solid var(--border);}
+.b-language{background:var(--purple-light);color:var(--purple);}
+.ts{font-size:.7rem;color:var(--muted);}
+.ch-wa{color:#16A34A;font-weight:600;font-size:.72rem;}.ch-sms{color:var(--blue-mid);font-weight:600;font-size:.72rem;}.ch-web{color:var(--purple);font-weight:600;font-size:.72rem;}
+.dir-in{color:var(--teal);font-weight:600;font-size:.7rem;}.dir-out{color:var(--amber);font-weight:600;font-size:.7rem;}
+.msg-cell{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);}
+@media(min-width:700px){.msg-cell{max-width:280px;}}
+.tfoot-row{padding:.85rem 1rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.empty{text-align:center;padding:2rem;color:var(--muted);}
+.empty i{font-size:1.8rem;display:block;margin-bottom:.5rem;opacity:.35;}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="/admin"><i class="fa-solid fa-heart-pulse"></i> MamaBot</a>
+  <div class="nav-spacer"></div>
+  <div class="nav-links" id="nav-links">
+    <a href="/admin"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+    <a href="/api/messages" class="active"><i class="fa-solid fa-comments"></i> Messages</a>
+    <a href="/api/stats"><i class="fa-solid fa-chart-bar"></i> Stats</a>
+    <a href="/api/health"><i class="fa-solid fa-server"></i> Health</a>
+    <a href="/chat" class="chat-link"><i class="fa-solid fa-message"></i> Chat</a>
+    <a href="/admin/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+  </div>
+  <button class="hamburger" onclick="toggleNav()"><i class="fa-solid fa-bars" id="ham-icon"></i></button>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <div class="page-title"><i class="fa-solid fa-comments"></i> Message Log</div>
+    <div class="filters">
+      <select id="f-intent" onchange="load()">
+        <option value="">All intents</option>
+        <option value="fallback">Fallback only</option>
+        <option value="danger_signs">Danger signs</option>
+        <option value="greeting">Greeting</option>
+        <option value="nutrition">Nutrition</option>
+        <option value="clinic_visits">Clinic</option>
+        <option value="hiv_pmtct">HIV/PMTCT</option>
+        <option value="newborn_care">Newborn</option>
+        <option value="labour_delivery">Labour</option>
+        <option value="emergency">Emergency</option>
+      </select>
+      <select id="f-dir" onchange="load()">
+        <option value="">Both directions</option>
+        <option value="inbound">Inbound only</option>
+        <option value="outbound">Outbound only</option>
+      </select>
+      <select id="f-limit" onchange="load()">
+        <option value="50">50 rows</option>
+        <option value="100">100 rows</option>
+        <option value="200">200 rows</option>
+      </select>
+      <button class="btn btn-ghost" onclick="load()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+    </div>
+  </div>
+
+  <div class="mini-stats" id="mini-stats"></div>
+
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Time</th><th>From</th><th>Ch</th><th>Dir</th><th>Intent</th><th>Message</th></tr></thead>
+        <tbody id="tbody"><tr><td colspan="6" class="empty"><i class="fa-solid fa-rotate fa-spin"></i>Loading...</td></tr></tbody>
+      </table>
+    </div>
+    <div class="tfoot-row">
+      <span class="ts" id="row-count">–</span>
+      <button class="btn btn-ghost" onclick="loadMore()"><i class="fa-solid fa-chevron-down"></i> Load more</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleNav(){const nl=document.getElementById('nav-links');const ic=document.getElementById('ham-icon');nl.classList.toggle('open');ic.className=nl.classList.contains('open')?'fa-solid fa-xmark':'fa-solid fa-bars';}
+const BADGE={greeting:'b-greeting',danger_signs:'b-danger',nutrition:'b-nutrition',clinic_visits:'b-clinic',newborn_care:'b-newborn',hiv_pmtct:'b-hiv',fallback:'b-fallback',thanks:'b-thanks',labour_delivery:'b-labour',pregnancy_stages:'b-pregnancy',language_english:'b-language',language_shona:'b-language',language_ndebele:'b-language',emergency:'b-emergency'};
+function badge(i){return `<span class="badge ${BADGE[i]||'b-thanks'}">${(i||'–').replace(/_/g,' ')}</span>`;}
+function mask(p){if(!p)return'–';const c=p.replace('whatsapp:','');return c.length>8?c.slice(0,3)+'…'+c.slice(-3):c;}
+function ftime(ts){if(!ts)return'–';try{const d=new Date(ts);return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}catch{return ts;}}
+function chClass(c){return c==='whatsapp'?'ch-wa':c==='web'?'ch-web':'ch-sms';}
+let msgs=[];
+async function load(){
+  const intent=document.getElementById('f-intent').value;
+  const dir=document.getElementById('f-dir').value;
+  const limit=document.getElementById('f-limit').value;
+  let url=`/api/messages/data?limit=${limit}`;
+  if(intent)url+=`&intent=${intent}`;
+  if(dir)url+=`&direction=${dir}`;
+  try{
+    msgs=await(await fetch(url)).json();
+    render();
+  }catch(e){document.getElementById('tbody').innerHTML='<tr><td colspan="6" class="empty"><i class="fa-solid fa-circle-exclamation"></i>Could not load</td></tr>';}
+}
+function render(){
+  const tbody=document.getElementById('tbody');
+  if(!msgs.length){tbody.innerHTML='<tr><td colspan="6" class="empty"><i class="fa-solid fa-inbox"></i>No messages match filters</td></tr>';return;}
+  tbody.innerHTML=msgs.map(m=>`<tr>
+    <td class="ts">${ftime(m.created_at)}</td>
+    <td class="ts">${mask(m.phone_number)}</td>
+    <td><span class="${chClass(m.channel)}">${(m.channel||'?').slice(0,3).toUpperCase()}</span></td>
+    <td><span class="${m.direction==='inbound'?'dir-in':'dir-out'}">${m.direction==='inbound'?'IN':'OUT'}</span></td>
+    <td>${badge(m.intent)}</td>
+    <td class="msg-cell" title="${(m.content||'').replace(/"/g,'')}">${m.content||''}</td>
+  </tr>`).join('');
+  const inb=msgs.filter(m=>m.direction==='inbound').length;
+  const fb=msgs.filter(m=>m.intent==='fallback'&&m.direction==='inbound').length;
+  const fbR=inb>0?Math.round(fb/inb*100):0;
+  document.getElementById('row-count').textContent=`Showing ${msgs.length} messages`;
+  document.getElementById('mini-stats').innerHTML=`
+    <div class="mstat"><div class="msl">Shown</div><div class="msv">${msgs.length}</div></div>
+    <div class="mstat"><div class="msl">Inbound</div><div class="msv">${inb}</div></div>
+    <div class="mstat ${fbR>30?'red':'green'}"><div class="msl">Fallback rate</div><div class="msv">${fbR}%</div></div>
+    <div class="mstat red"><div class="msl">Fallbacks</div><div class="msv">${fb}</div></div>`;
+}
+function loadMore(){document.getElementById('f-limit').value=String(Math.min(parseInt(document.getElementById('f-limit').value)+50,500));load();}
+load();
+setInterval(load,20000);
+</script>
+</body>
+</html>

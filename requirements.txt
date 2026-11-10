@@ -1,0 +1,8 @@
+Flask==3.0.3
+python-dotenv==1.0.1
+twilio==9.2.3
+scikit-learn==1.5.0
+numpy==1.26.4
+gunicorn==22.0.0
+langdetect==1.0.9
+requests==2.34.2

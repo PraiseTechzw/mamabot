@@ -1,0 +1,265 @@
+{
+  "intents": [
+    {
+      "tag": "greeting",
+      "patterns": [
+        "hi", "hello", "hey", "hie", "helo", "hallo", "hy", "hai",
+        "good morning", "good afternoon", "good evening", "good day",
+        "ok", "okay", "yes", "no", "yeah", "help", "menu", "start",
+        "0", "00", "back", "more", "again", "restart",
+        "mhoro", "makadii", "mamuka sei", "mangwanani", "masikati", "manheru",
+        "ndeipi", "zvakadii", "ko", "sawubona", "sanibona", "lotjhani",
+        "salibonani", "yebo", "kulungile"
+      ],
+      "responses": {
+        "english": "Hello! I am MamaBot, your maternal health assistant.\n\nHow can I help you today?\n\n1 — Pregnancy stages\n2 — Danger signs\n3 — Nutrition\n4 — Clinic visits\n5 — Labour & delivery\n6 — Newborn care\n7 — HIV & PMTCT\n\nType a number or ask me anything.",
+        "shona": "Mhoro! Ndini MamaBot, mubatsiri wako weutano hwemimba.\n\nNdinokubatsira na:\n\n1 — Matanho emimba\n2 — Zviratidzo zvengozi\n3 — Chikafu chakanaka\n4 — Kuenda kuchipatara\n5 — Kubereka\n6 — Kuchengeta mwana mutsva\n7 — HIV nePMTCT\n\nNyora nambari kana ubvunze chero chinhu.",
+        "ndebele": "Sawubona! NginguMamaBot, umsizi wakho wezempilo ngesikhathi sokulinda.\n\nNgingakusiza nge:\n\n1 — Izigaba zokukhulelwa\n2 — Izibonakaliso zengozi\n3 — Ukudla okuhle\n4 — Ukuyabona udokotela\n5 — Ukuzala\n6 — Ukunakekela ingane entsha\n7 — I-HIV le-PMTCT\n\nBhala inombolo noma ubuze noma yini."
+      }
+    },
+    {
+      "tag": "thanks",
+      "patterns": [
+        "thank you", "thanks", "thank u", "thankyou", "thx", "ty",
+        "thank you so much", "many thanks", "thanks a lot", "that helped",
+        "appreciated", "great", "wonderful", "perfect", "awesome", "good",
+        "maita basa", "maita zvako", "tatenda", "ndatenda", "waita basa",
+        "ngiyabonga", "siyabonga", "ngiyathokoza"
+      ],
+      "responses": {
+        "english": "You are welcome! I am always here to help.\n\nWould you like to know anything else?\n\n1 — Pregnancy stages\n2 — Danger signs\n3 — Nutrition\n4 — Clinic visits\n5 — Labour & delivery\n6 — Newborn care\n7 — HIV & PMTCT",
+        "shona": "Maita zvako! Ndiri pano nguva dzose kukubatsira.\n\nUne imwe mibvunzo here?\n\n1 — Matanho emimba\n2 — Zviratidzo zvengozi\n3 — Chikafu chakanaka\n4 — Kuenda kuchipatara\n5 — Kubereka\n6 — Kuchengeta mwana mutsva\n7 — HIV nePMTCT",
+        "ndebele": "Ngiyabonga! Ngihlezi lapha ukukusiza.\n\nUfuna ukwazi okunengi?\n\n1 — Izigaba zokukhulelwa\n2 — Izibonakaliso zengozi\n3 — Ukudla okuhle\n4 — Ukuyabona udokotela\n5 — Ukuzala\n6 — Ukunakekela ingane entsha\n7 — I-HIV le-PMTCT"
+      }
+    },
+    {
+      "tag": "pregnancy_stages",
+      "patterns": [
+        "1", "pregnancy stages", "stages of pregnancy", "pregnancy weeks",
+        "how far am i", "how many weeks", "trimester", "first trimester",
+        "second trimester", "third trimester", "pregnant", "pregnancy",
+        "how does pregnancy progress", "months pregnant", "week by week",
+        "baby development", "fetal development", "i am pregnant", "expecting",
+        "how is my baby growing", "what happens each month", "pregnancy changes",
+        "what to expect", "pregnancy journey",
+        "nhumbu", "mimba", "ndine mimba", "ndakamitiswa", "ndinomimba",
+        "matanho emimba", "mwedzi wemimba", "mimba yakanaka",
+        "khulelwe", "ngikhulelwe", "ukukhulelwa", "ukumitha",
+        "ingane ikhula kanjani", "izigaba zokukhulelwa"
+      ],
+      "responses": {
+        "english": "*Pregnancy Stages*\n\n*First Trimester (Weeks 1–12):*\n• Baby's organs begin forming\n• Morning sickness is common\n• Visit clinic to confirm pregnancy\n• Start folic acid supplements\n\n*Second Trimester (Weeks 13–26):*\n• Baby moves — you will feel kicks!\n• Energy returns for most women\n• ANC visits at weeks 20 and 26\n• Ultrasound scan recommended\n\n*Third Trimester (Weeks 27–40):*\n• Baby gains weight rapidly\n• Plan your delivery location now\n• ANC visits at weeks 30, 34, 36 and 38\n• Watch for danger signs\n\nWHO recommends 8 ANC visits total.\n\nWould you like to know about danger signs, nutrition, or clinic visits?",
+        "shona": "*Matanho Emimba*\n\n*Trimester Yekutanga (Masvondo 1–12):*\n• Nhengo dzemuviri wemwana dzinotanga kuumbwa\n• Kurwara mangwanani kunowanikwa\n• Enda kuchipatara kusimbisa mimba\n• Tanga kutora folic acid\n\n*Trimester Yechipiri (Masvondo 13–26):*\n• Mwana anotanga kusimudza — uchamunzwa!\n• Simba rinodzoka kune vakadzi vazhinji\n• Enda kuANC pamasvondo 20 na 26\n• Scan inokurudzirwa\n\n*Trimester Yechitatu (Masvondo 27–40):*\n• Mwana anokura nekukurumidza\n• Ronga nzvimbo yekubereka iye zvino\n• Enda kuANC pamasvondo 30, 34, 36 na 38\n• Tarisa zviratidzo zvengozi\n\nWHO inokurudzira kushanyira ANC kangumi nesere munguva yose yemimba.\n\nUda kuziva nezve zviratidzo zvengozi, chikafu, kana kuchipatara?",
+        "ndebele": "*Izigaba Zokukhulelwa*\n\n*Isigaba Sokuqala (Amasonto 1–12):*\n• Izitho zengane ziqala ukwakhiwa\n• Ukugula ekuseni kuvamile\n• Ya esibhedlela ukuqinisekisa ukukhulelwa\n• Qala ukuthatha i-folic acid\n\n*Isigaba Sesibili (Amasonto 13–26):*\n• Ingane iqala ukukhahla — uzakuzwa!\n• Amandla abuyela kwabesifazane abanengi\n• Vakasha i-ANC emasvondweni 20 le 26\n• I-scan ikhuthazwa\n\n*Isigaba Sesithathu (Amasonto 27–40):*\n• Ingane ikhula ngokushesha\n• Hlela indawo yokubeletha manje\n• Vakasha i-ANC emasvondweni 30, 34, 36 le 38\n• Qaphela izibonakaliso zengozi\n\nI-WHO ikhukhaza ukuvakasha i-ANC izikhathi eziyisishiyagalombili phakathi nokukhulelwa.\n\nFuna ukwazi ngezibonakaliso zengozi, ukudla, noma ukuvakasha esibhedlela?"
+      },
+      "follow_ups": {
+        "first trimester": "pregnancy_stages",
+        "second trimester": "pregnancy_stages",
+        "third trimester": "pregnancy_stages",
+        "more details": "pregnancy_stages",
+        "tell me more": "pregnancy_stages",
+        "what about danger": "danger_signs",
+        "what should i eat": "nutrition",
+        "when do i go to clinic": "clinic_visits"
+      }
+    },
+    {
+      "tag": "danger_signs",
+      "patterns": [
+        "2", "danger signs", "danger sign", "warning signs", "warning sign",
+        "something wrong", "not feeling well", "worried", "scared", "something is wrong",
+        "bleeding", "heavy bleeding", "i am bleeding", "blood", "i see blood",
+        "severe headache", "bad headache", "head pain", "my head is paining",
+        "blurred vision", "cannot see", "blurry eyes", "vision problems",
+        "swollen feet", "swollen hands", "swollen face", "swelling",
+        "feet swollen", "my feet are swollen", "my legs are swollen",
+        "convulsions", "fits", "seizure", "shaking uncontrollably",
+        "fever", "high temperature", "i have a fever", "my body is hot",
+        "no fetal movement", "baby not moving", "baby not kicking",
+        "i cant feel baby", "baby stopped moving",
+        "abdominal pain", "stomach pain", "cramps", "pain in stomach",
+        "vomiting", "throwing up", "feel dizzy", "dizzy", "light headed",
+        "fainting", "fainted", "passed out",
+        "water broke", "waters broke", "fluid leaking",
+        "preterm labour", "early labour", "contractions too early",
+        "is it normal", "should i be worried",
+        "ndiri kutya", "ndiri kurwadziwa", "kurwadziwa kwakanyanya",
+        "musoro unorwadziwa", "kuona zvisina kujeka", "matumbu anorwadziwa",
+        "ndiri kubuda ropa", "mwana haachisimudzi", "handione zvakanaka",
+        "ngibuhlungu", "ngiphuma igazi", "ingane ayizange isimuke",
+        "inhloko ibuhlungu", "ngibona ngokungacaci", "inyawo zivuvukile"
+      ],
+      "responses": {
+        "english": "*DANGER SIGNS IN PREGNANCY*\n\nGo to clinic IMMEDIATELY if you have:\n\n• Heavy bleeding from vagina\n• Severe headache that won't go away\n• Blurred or double vision\n• Swollen face, hands or feet\n• Fits or convulsions\n• High fever (above 38°C)\n• Baby not moving for 12+ hours\n• Severe stomach pain\n• Water breaking before 37 weeks\n• Fainting or loss of consciousness\n\nDo NOT wait — these signs are emergencies!\n\nCall your nearest clinic or Village Health Worker immediately.\n\nAre you experiencing any of these symptoms right now?",
+        "shona": "*ZVIRATIDZO ZVENGOZI MUMIMBA*\n\nEnda kuchipatara NEKUKURUMIDZA kana une:\n\n• Kubuda ropa rakawanda nezasi\n• Kurwadziwa kwakaipa kwakanyanya musoro\n• Kuona zvisina kujeka kana kaviri\n• Kuzvimba kumeso, maoko kana tsoka\n• Maririzano kana muviri kushamba\n• Tembiricha yakakwira (pamusoro pa 38°C)\n• Mwana asingazosimudzi maawa 12 kana kupfuura\n• Kurwadziwa kwakaipa muchiuno\n• Mvura kuputika basa asati atanga kusvika 37\n• Kupera simba kana kurasika pfungwa\n\nUSAMIRA — izvi ndezvengozi!\n\nFona chipatara chiri pedyo kana VHW wako nekukurumidza.\n\nUne rimwe rezvimhu izvi iye zvino here?",
+        "ndebele": "*IZIBONAKALISO ZENGOZI NGESIKHATHI SOKULINDA*\n\nYa esibhedlela NGOKUSHESHA uma ulezitho lezi:\n\n• Igazi elinengi livela phansi\n• Inhloko ebuhlungu kakhulu engayi\n• Ukubona ngokungacaci noma kabili\n• Ubuso, izandla noma inyawo zivuvukile\n• Ukuqaqamba noma ukuthuthumela\n• Umzimba oshisayo (ngaphezu kuka-38°C)\n• Ingane ingasimukanga amahora angu-12 noma ngaphezulu\n• Ubuhlungu obufayo esiswini\n• Amanzi ephuka ngaphambi kwamasonto angu-37\n• Ukudangala noma ukulahlekelwa yizwi\n\nUNGALINDANGI — lezi zizibonakaliso zezimo eziphuthumayo!\n\nShayela isibhedlela esiseduze noma uMsebenzi Wezempilo Emzini ngokushesha.\n\nUlezitho lezi manje?"
+      }
+    },
+    {
+      "tag": "nutrition",
+      "patterns": [
+        "3", "nutrition", "nutition", "nutrtion", "nutritoin",
+        "food", "diet", "eating", "what to eat", "what should i eat",
+        "healthy food", "good food", "food during pregnancy",
+        "vitamins", "folic acid", "iron tablets", "supplements",
+        "fruits", "vegetables", "protein", "minerals",
+        "breastfeeding", "breast milk", "breast feeding", "breastfeed",
+        "nursing", "feeding baby", "milk for baby", "how to breastfeed",
+        "tell me about nutrition", "nutritional advice", "eating well",
+        "balanced diet", "healthy eating", "pregnancy diet",
+        "what vitamins", "what minerals", "food to avoid",
+        "can i eat", "is it safe to eat",
+        "chikafu", "chikafu chakanaka", "kudya", "ndinofanira kudya chii",
+        "kudya kwemimba", "chikafu chemimba", "zvokudya",
+        "ukudla", "ukudla okuhle", "ukudla ngesikhathi sokulinda",
+        "ncelisa", "ukuncelisa", "ubisi lwemzimba"
+      ],
+      "responses": {
+        "english": "*Nutrition During Pregnancy*\n\n*Foods to eat every day:*\n• Dark green vegetables — rape, covo, spinach\n• Orange vegetables — sweet potato, pumpkin, carrots\n• Beans, lentils and groundnuts — protein\n• Lean meat, fish and eggs — protein and iron\n• Fruits — banana, mango, orange, guava\n• Milk and yoghurt — calcium for strong bones\n• Sadza, rice, bread — energy\n\n*Supplements your nurse will give you:*\n• Folic acid — prevents birth defects (take from start)\n• Iron tablets — prevents anaemia and weakness\n• Take every day without missing\n\n*Foods to AVOID:*\n• Raw or undercooked meat and eggs\n• Unpasteurised milk\n• Alcohol — harmful to baby at any stage\n• Too much salt and sugar\n\n*Breastfeeding:*\nBreast milk is best for the first 6 months. Feed on demand, 8–12 times a day. No water, tea or formula needed.\n\nWould you like advice about clinic visits or danger signs?",
+        "shona": "*Chikafu Chekudya Panguva Yemimba*\n\n*Chikafu chekudya zuva rega rega:*\n• Miriwo yakasviba — muriwo, covo, spinach\n• Miriwo yemichero — batata rinotsvuka, mbeyu, magaro\n• Nyemba, mbogo negunguwo — protein\n• Nyama, hove namazai — protein nesimbi\n• Michero — bhanana, mango, chirimwe, gwava\n• Mukaka na yoghurt — calcium yemapfupa akasimba\n• Sadza, raisi, chingwa — simba\n\n*Mishonga inokupiwa nenesi yako:*\n• Folic acid — indzivirira matambudziko ekuberekwa\n• Mapiritsi esimbi — anodzivirira anaemia\n• Ida zuva rega rega usasiya\n\n*Chikafu CHOKUZIVISA:*\n• Nyama yakabiwa zvisina kukwana namazai\n• Mukaka usina kuiswa zvikamu\n• Doro — rinokuvadza mwana pamatanho ose\n• Munyu namuswero zvakanyanya\n\n*Kuchengeta mazamu:*\nMukaka wemazamu ndiwo wakanakira mwana kwemasvondo 6 ekutanga. Muchipishe nguva dzose, kamwe 8–12 pazuva. Hapana mvura, tii kana formula inodikanwa.\n\nUda mazano ekuchipatara kana zviratidzo zvengozi?",
+        "ndebele": "*Ukudla Ngesikhathi Sokulinda*\n\n*Ukudla okudingekayo nsuku zonke:*\n• Imifino eluhlaza — umriwo, covo, spinach\n• Imifino emthubi — ubhatata, ithanga, amakharothi\n• Ubhontshisi, indumba negadanga — amandla\n• Inyama, inhlanzi lamaqanda — amandla lesibili\n• Izithelo — ubhanana, umango, lamula, igwava\n• Ubisi le-yoghurt — ikhaliziamu yamathambo\n• Isiduli, ilayisi, isinkwa — amandla\n\n*Imithi umeluleki wakho azakunika yona:*\n• I-folic acid — ivimbela izinkinga zokuzalwa\n• Amaphilisi esibili — avimbela i-anaemia\n• Thatha nsuku zonke ungashiyi\n\n*Ukudla OKUFANELE UKUPHEPHA:*\n• Inyama lamaqanda angaphekwanga ngokwaneleyo\n• Ubisi obunga-pasteurised\n• Utshwala — kuyingozi enganeni nganoma isiphi isigaba\n• Usawoti loshukela okunengi\n\n*Ukuncelisa:*\nUbisi lwesifuba lungcono kuze kube izinyanga eziyisithupha. Ncelisa nganoma yisiphi isikhathi, izikhathi eziyisishiyagalombili kuya eziyishumi nambili ngosuku. Akunamanzi, itiye noma i-formula edingekayo.\n\nFuna ulwazi ngokuvakasha esibhedlela noma izibonakaliso zengozi?"
+      }
+    },
+    {
+      "tag": "clinic_visits",
+      "patterns": [
+        "4", "clinic", "clinic visit", "anc", "antenatal", "antenatal care",
+        "when to go to clinic", "clinic schedule", "appointments",
+        "hospital", "health centre", "doctor", "nurse", "next visit",
+        "how many visits", "anc visits", "when should i go",
+        "nearest clinic", "where is clinic", "find clinic",
+        "karoi", "chinhoyi", "harare", "bulawayo", "mutare", "gweru",
+        "masvingo", "kwekwe", "bindura", "marondera", "chegutu",
+        "zvishavane", "hwange", "victoria falls", "beitbridge",
+        "chipatara", "chipatara chiri pedyo", "kuenda kuchirurumende",
+        "zuva rangu rekuenda", "ndinoenda riini kuchirurumende",
+        "isibhedlela", "isibhedlela esiseduze", "udokotela",
+        "what happens at clinic", "what will they do", "what to bring"
+      ],
+      "responses": {
+        "english": "*Antenatal Care (ANC) Visit Schedule*\n\nWHO recommends 8 visits:\n\n• Week 8 — confirm pregnancy, blood tests, start supplements\n• Week 12 — check growth, HIV test\n• Week 20 — scan, check baby position\n• Week 26 — blood pressure, weight\n• Week 30 — anaemia check, tetanus injection\n• Week 34 — baby position, birth plan\n• Week 36 — final check before delivery\n• Week 38 — delivery preparation\n\n*What to bring to every visit:*\n• Your ANC card — never forget it!\n• Your ID\n• Any medicines you are taking\n\n*At every visit you will get:*\n• Blood pressure check\n• Weight measurement\n• Urine test\n• Iron and folic acid tablets\n\nReply with your town or district to find the nearest clinic.",
+        "shona": "*Chirongwa Chekushanyira ANC*\n\nWHO inokurudzira kushanyira kanominwe:\n\n• Svondo 8 — simbisa mimba, bvunzo dzemaropa, tanga mishonga\n• Svondo 12 — tarisa kukura kwemwana, bvunzo yaHIV\n• Svondo 20 — scan, tarisa nzvimbo yemwana\n• Svondo 26 — tembiricha yegopa, uzito\n• Svondo 30 — bvunzo yeanemia, injection yetetanasi\n• Svondo 34 — nzvimbo yemwana, chirongwa chekubereka\n• Svondo 36 — tarisa yekupedzisira\n• Svondo 38 — kurukura nezvekubereka\n\n*Zvinofanira kuenda nazvo:\n• ANC card yako — usaibvira!\n• ID yako\n• Mishonga yaunodya\n\n*Pazushanyiro dzose uchapiwa:\n• Tarisa tembiricha yegopa\n• Kurongerwa uzito\n• Bvunzo yemuchena\n• Mapiritsi esimbi nefolic acid\n\nNyora taundi kana dunhu rako kuti tiwane chipatara chiri pedyo nawe.",
+        "ndebele": "*Uhlelo Lwezivakasho Ze-ANC*\n\nI-WHO ikhuthaza izivakasho eziyisishiyagalombili:\n\n• Isonto 8 — qinisekisa ukukhulelwa, imihlolo yegazi, qala imithi\n• Isonto 12 — hlola ukukhula kwengane, uhlolo lwe-HIV\n• Isonto 20 — i-scan, hlola indawo yengane\n• Isonto 26 — ingcindezi yegazi, isisindo\n• Isonto 30 — uhlolo lwe-anaemia, umjovo we-tetanus\n• Isonto 34 — indawo yengane, uhlelo lokubeletha\n• Isonto 36 — ukuhlolwa kokuphela\n• Isonto 38 — ukulungiselela ukubeletha\n\n*Okudingeka ekuvakasheni:\n• Ikhadi lakho le-ANC — ungalokhu ukhohlwa!\n• Imvume yakho yobuzwe\n• Noma imiphi imithi oyithathayo\n\n*Ekuvakasheni ngakunye uzathola:\n• Ukuhlolwa kwengcindezi yegazi\n• Ukulinganiswa kwesisindo\n• Uhlolo lwamangcolosi\n• Amaphilisi esibili le-folic acid\n\nBhala idolobha noma isifunda sakho ukuze sithole isibhedlela esiseduze."
+      }
+    },
+    {
+      "tag": "labour_delivery",
+      "patterns": [
+        "5", "labour", "labor", "delivery", "giving birth", "birth",
+        "contractions", "when will i deliver", "when will i give birth",
+        "signs of labour", "signs of labor", "ready to deliver",
+        "pushing", "water broke", "my water broke",
+        "how long does labour take", "stages of labour",
+        "birth plan", "where to deliver", "deliver at home",
+        "deliver at clinic", "midwife", "what to pack",
+        "how will i know", "when to go to hospital",
+        "kubereka", "ndinobereka riini", "zviratidzo zvekubereka",
+        "maririzano", "mvura yaputika", "ukuzala",
+        "ngizala nini", "izibonakaliso zokuzala", "ukuqaqamba"
+      ],
+      "responses": {
+        "english": "*Labour and Delivery*\n\n*Signs Labour is Starting:*\n• Regular contractions every 5–10 minutes, getting stronger\n• Water breaking — clear fluid from below\n• Bloody show — pink or red mucus\n• Strong lower back pain\n• Strong urge to push down\n\n*Stages of Labour:*\n1 — Early labour: contractions every 5–10 min\n2 — Active labour: contractions every 2–3 min\n3 — Pushing — baby is born\n4 — Placenta is delivered\n\n*Go to clinic IMMEDIATELY if:*\n• Water breaks before 37 weeks\n• Heavy bleeding at any time\n• Baby stops moving\n• Very severe pain\n\nAlways deliver at a health facility — NEVER alone at home.\n\n*Pack for the clinic:*\n• ANC card and ID\n• Baby clothes and blanket\n• Your own clothes and towel\n• Money for transport home\n\nWould you like to know about newborn care after delivery?",
+        "shona": "*Kubereka*\n\n*Zviratidzo zvekutanga kwemubereko:*\n• Kurwadziwa kunowirirana kamwe ne kamwe maawa mashoma, kwozoitika kakawanda\n• Mvura kuputika — mvura yakajeka kubuda pasi\n• Ropa duku pamucherechedzo — mucus youni kana youni tsvuku\n• Kurwadziwa kwakaipa musana wepasi\n• Kuda kununura zvikuru\n\n*Matanho Ekubereka:*\n1 — Kutanga kubereka: kurwadziwa kamwe ne kamwe masvondo 5–10\n2 — Kubereka kunowiriridza: kamwe ne kamwe masvondo 2–3\n3 — Kusundidzira — mwana abekerwa\n4 — Ganda rinobuda\n\n*Enda kuchipatara NEKUKURUMIDZA kana:\n• Mvura yaputika asati asvika masvondo 37\n• Ropa rakawanda chero nguva\n• Mwana akarega kusimudza\n• Kurwadziwa kukuru kwazvo\n\nBereka nguva dzose kuchipatara — USAREGE KUBEREKA PAMBA WEGA.\n\n*Zvokupereka kuchipatara:\n• ANC card na ID\n• Nguo nemabhanketi emwana\n• Nguo dzako netshuwe\n• Mari yekudzokera kumba\n\nUda kuziva nezve kuchengeta mwana mushure mekubereka?",
+        "ndebele": "*Ukuzala*\n\n*Izibonakaliso Zokuqala Ukuzala:*\n• Ukuqaqamba ngokuqondile njalo njalo, kuqiniswa\n• Amanzi ephuka — amanzi acwebileyo avela phansi\n• Igazi elincane — ukhwehlela omhlophe ophuzayo noma obomvu\n• Ubuhlungu obufayo emhlane ongezansi\n• Uthando lokushintsha olunamandla\n\n*Izigaba Zokuzala:*\n1 — Ukuqala ukuzala: ukuqaqamba njalo njalo 5–10 amaminithi\n2 — Ukuzala okusebenzayo: ukuqaqamba 2–3 amaminithi\n3 — Ukushintsha — ingane iyazalwa\n4 — Isibeleko sikhishwa\n\n*Ya esibhedlela NGOKUSHESHA uma:\n• Amanzi ephuka ngaphambi kwamasonto angu-37\n• Igazi elinengi nganoma yisiphi isikhathi\n• Ingane iyeka ukusimuka\n• Ubuhlungu obufayo kakhulu\n\nYizala njalo esikhungweni sezempilo — UNGABI YEDWA EKHAYA.\n\n*Lungisela isibhedlela:\n• Ikhadi le-ANC lenombolo yakho\n• Izingubo zengane lembesa\n• Izingubo zakho letawula\n• Imali yokubuyela ekhaya\n\nFuna ukwazi ngokunakekela ingane ngemuva kokuzala?"
+      }
+    },
+    {
+      "tag": "newborn_care",
+      "patterns": [
+        "6", "newborn", "new born", "newborn care", "baby care",
+        "i have a newborn", "i have a new born", "i just gave birth",
+        "just delivered", "after birth", "postnatal", "post natal",
+        "baby crying", "baby not eating", "baby sick", "baby fever",
+        "cord", "umbilical cord", "belly button", "cord care",
+        "bathing baby", "how to bathe baby", "washing baby",
+        "baby sleeping", "jaundice", "yellow skin", "baby yellow",
+        "immunisation", "immunization", "vaccines", "vaccination",
+        "how do i care for baby", "what do i do after birth",
+        "kuchengeta mwana", "mwana mutsva", "mwana achangoberekwa",
+        "ndabereka", "mwana wangu", "ingane entsha",
+        "ukuphatha ingane", "ngibelethile", "ingane yami"
+      ],
+      "responses": {
+        "english": "*Newborn Care Guide*\n\n*First Hours After Birth:*\n• Skin-to-skin contact immediately with mother\n• Start breastfeeding within 1 hour of birth\n• Keep baby warm — kangaroo care works well\n• Baby gets Vitamin K injection at birth\n\n*Feeding:*\n• Breastfeed exclusively for the first 6 months\n• Feed on demand — 8 to 12 times per day\n• No water, tea or formula is needed\n• Breastfeed from both sides at each feed\n\n*Cord Care:*\n• Keep cord clean and dry at all times\n• Do NOT put herbs, ash, mud or oil on cord\n• Cord falls off in 7 to 10 days\n• See a nurse if cord is red, smelly or wet\n\n*Warning Signs — Go to Clinic:*\n• Not feeding for 8 or more hours\n• Yellow skin or eyes — jaundice\n• Difficulty breathing or fast breathing\n• High fever above 38°C\n• Convulsions or shaking\n\n*Vaccinations:*\n• At birth: BCG, Polio\n• 6 weeks: DPT, Hib, HepB, PCV\n• 10 weeks: DPT, Hib, HepB, PCV\n• 14 weeks: DPT, Hib, HepB, PCV, Polio\n\nWould you like advice about HIV and PMTCT for your baby?",
+        "shona": "*Ndiridziro Yekuchengeta Mwana Mutsva*\n\n*Maawa Ekutanga Mushure Mekubereka:*\n• Kubatana nezanda pemuviri pakarepo namai\n• Tanga kuchengeta mazamu mukati memaawa ekutanga\n• Chengetedza mwana kupisa — kangaroo care inoshanda\n• Mwana anopiwira injection yaVitamin K pokuberekwa\n\n*Kudyisa:*\n• Chengeta mazamu chete kwemasvondo 6 ekutanga\n• Chipishe nguva dzose — kamwe 8 kusvika 12 pazuva\n• Hapana mvura, tii kana formula inodikanwa\n• Chengeta mazamu ose maviri pachipiwa chega chega\n\n*Kuchengeta tombo:*\n• Chengeta tombo rakachena uye rakaoma nguva dzose\n• USAISE mishonga yechivanhu, madota, dhaka kana mafuta patambo\n• Tombo anodonha mazuva 7 kusvika 10\n• Ona nesi kana tambo rina utsi, inonhuhwa kana inahukwa\n\n*Zviratidzo Zvekuenda Kuchipatara:\n• Kuramba kudyisa maawa 8 kana kupfuura\n• Ganda kana meso akatsva — jaundice\n• Kutadza kupfeka mweya kana kukurumidza\n• Tembiricha yakakwira pamusoro pa 38°C\n• Kurwadza kana kushamba\n\n*Mabindu:\n• Pokuberekwa: BCG, Polio\n• Svondo 6: DPT, Hib, HepB, PCV\n• Svondo 10: DPT, Hib, HepB, PCV\n• Svondo 14: DPT, Hib, HepB, PCV, Polio\n\nUda mazano maHIV nePMTCT emwana wako?",
+        "ndebele": "*Umhlahlandlela Wokunakekela Ingane Entsha*\n\n*Amahora Okuqala Ngemuva Kokuzalwa:*\n• Ukuxhumana kwesikhumba ngokushesha nonina\n• Qala ukuncelisa ngaphakathi kwehora lokuqala\n• Gcina ingane ifudumele — ukugqoka njengekangaro kusebenza kahle\n• Ingane ithola umjovo we-Vitamin K ekuzalweni\n\n*Ukuncelisa:*\n• Ncelisa kuphela izinyanga eziyisithupha zokuqala\n• Ncelisa nganoma yisiphi isikhathi — izikhathi 8 kuya ku-12 ngosuku\n• Akunamanzi, itiye noma i-formula edingekayo\n• Ncelisa ohlangothini lwebele ngakunye ekucimeni ngakunye\n\n*Ukunakekela Intambo:\n• Gcina intambo ihlanzekile futhi eyomile njalo\n• UNGAFAKI imithombo, umlotha, udaka noma amafutha entambweni\n• Intambo iyawa ezinsukwini ezingu-7 kuya ku-10\n• Bonana lomeluleki wezempilo uma intambo ibomvu, inuka noma inomanzi\n\n*Izibonakaliso Zoxakaza — Ya Esibhedlela:\n• Ukuncelisa amahora angu-8 noma ngaphezulu\n• Isikhumba noma amehlo aluhlaza — i-jaundice\n• Ubunzima bokuphefumula noma ukuphefumula ngokushesha\n• Ukushisa okuphezulu kwa-38°C\n• Ukuqaqamba noma ukuthuthumela\n\n*Imijovo:\n• Ekuzalweni: i-BCG, i-Polio\n• Izonto 6: i-DPT, i-Hib, i-HepB, i-PCV\n• Izonto 10: i-DPT, i-Hib, i-HepB, i-PCV\n• Izonto 14: i-DPT, i-Hib, i-HepB, i-PCV, i-Polio\n\nFuna ulwazi nge-HIV ne-PMTCT yengane yakho?"
+      }
+    },
+    {
+      "tag": "hiv_pmtct",
+      "patterns": [
+        "7", "hiv", "aids", "hiv aids", "pmtct", "prevention",
+        "hiv test", "hiv testing", "hiv positive", "positive",
+        "art", "arvs", "antiretroviral", "treatment",
+        "mother to child", "transmission", "prevent transmission",
+        "hiv and pregnancy", "pregnancy and hiv",
+        "i am hiv positive", "i tested positive", "my status",
+        "cd4", "viral load", "hiv status", "sti", "syphilis",
+        "can i breastfeed if positive", "will baby get hiv",
+        "hiv yakawanda", "hiv ne mimba", "ndine hiv",
+        "kudzivirira kutapurira", "mushonga wehiv", "i-hiv", "i-aids"
+      ],
+      "responses": {
+        "english": "*HIV and PMTCT*\n*(Prevention of Mother to Child Transmission)*\n\n*Every pregnant woman should:*\n• Get tested for HIV at the first ANC visit\n• Know your status — it protects you and your baby\n• Get tested again at 36 weeks\n\n*If you are HIV POSITIVE:*\n• Start ART treatment immediately — do not wait\n• Take ART every day without missing a dose\n• Stay on treatment throughout pregnancy and breastfeeding\n• Deliver at a health facility\n• Your baby gets NVP drops for 6 weeks after birth\n• Baby is tested at 6 weeks and 18 months\n\n*With proper treatment:*\nThe risk of passing HIV to baby drops from 40% to less than 2%\n\n*Breastfeeding with HIV:*\n• You CAN breastfeed while on ART\n• Exclusive breastfeeding for 6 months is recommended\n• Continue ART throughout breastfeeding\n\n*Partner testing:*\n• Ask your partner to test too\n• Couples testing is available at your clinic\n\nAll HIV services are FREE and CONFIDENTIAL at government clinics.\n\nDo you have questions about ART treatment or breastfeeding with HIV?",
+        "shona": "*HIV nePMTCT*\n*(Kudzivirira Kutapurira Kubva Kuna Amai Kusvika Kuna Mwana)*\n\n*Mukadzi wose ane mimba anofanira:\n• Bvunzwa HIV pazushanyiro yekutanga yeANC\n• Ziva mamiriro ako — inokudzivirira iwe nemwana wako\n• Bvunzwa zvakare pasvondo 36\n\n*Kana une HIV POSITIVE:\n• Tanga mushonga weART nekukurumidza — usasamira\n• Tora ART zuva rega rega usingasiye zuva\n• Ramba uri pamishonga munguva yose yemimba uye kuchengeta mazamu\n• Bereka kuchipatara\n• Mwana wako anopiwira NVP mashama kwemasvondo 6\n• Mwana anobvunzwa pasvondo 6 na pasvondo 18\n\n*Nemishonga yakanaka:\nDanjo rekutapurira HIV kubva kuna amai kusvika kuna mwana rinobuda kubva 40% kusvika pazasi pa 2%\n\n*Kuchengeta mazamu une HIV:\n• UNOGONA kuchengeta mazamu uri pamishonga weART\n• Kuchengeta mazamu chete kwemasvondo 6 kunokurudzirwa\n• Ramba uri pamishonga munguva yose yekuchengeta mazamu\n\n*Bvunzo yemurume wako:\n• Mukumbire murume wako kuzobvunzwa nawe\n• Bvunzo dzamwe vaviri dzinowanikwa kuchipatara\n\nMasevhisi ose eHIV HAANA MARI uye AKAVANZWA kuchipatara chehurumende.",
+        "ndebele": "*I-HIV le-PMTCT*\n*(Ukuvimbela Ukusabalalisa Kusuka Kunina Ukuya Enganeni)*\n\n*Owesifazane okhulumayo wonke kufanele:\n• Ukuhlolwa nge-HIV ekuvakasheni kwakuqala kwe-ANC\n• Yazi isimo sakho — kuvikela wena lengane yakho\n• Ukuhlolwa futhi emasvondweni angu-36\n\n*Uma una i-HIV POSITIVE:\n• Qala ukulashwa nge-ART ngokushesha — ungalindi\n• Thatha i-ART njalo njalo ungazishiyi izigaba\n• Hlala emithini ngesikhathi sonke sokulinda lokuncelisa\n• Belethela esikhungweni sezempilo\n• Ingane yakho ithola amathonsi e-NVP izinyanga eziyisithupha\n• Ingane ihlolwa ngezonto eziyisithupha langezinyanga eziyishumi nesishiyagalombili\n\n*Ngokulapha okufaneleyo:\nIngozi yokudlulisela ingane i-HIV isehla kusuka ku-40% iye phansi kuka-2%\n\n*Ukuncelisa une i-HIV:\n• UNGAKWENZA ukuncelisa usathatha i-ART\n• Ukuncelisa kuphela izinyanga eziyisithupha kukhuthazwa\n• Qhubeka nge-ART ngesikhathi sonke sokuncelisa\n\n*Ukuhlolwa komlingani wakho:\n• Cela umlingani wakho ukuze ahlolwe\n• Ukuhlolwa kwezimbili kukhona esibhedlela\n\nImikhuba yonke ye-HIV MAHHALA futhi IYIMFIHLO ezikhungweni zezempilo zikaHulumeni."
+      }
+    },
+    {
+      "tag": "language_english",
+      "patterns": [
+        "english", "eng", "en", "switch to english", "respond in english",
+        "speak english", "i want english", "english please",
+        "change to english", "use english", "ndipindure ngeChirungu",
+        "phendula ngesiNgisi"
+      ],
+      "responses": {
+        "english": "Switched to English! How can I help you?\n\n1 — Pregnancy stages\n2 — Danger signs\n3 — Nutrition\n4 — Clinic visits\n5 — Labour & delivery\n6 — Newborn care\n7 — HIV & PMTCT",
+        "shona": "Switched to English! How can I help you?\n\n1 — Pregnancy stages\n2 — Danger signs\n3 — Nutrition\n4 — Clinic visits\n5 — Labour & delivery\n6 — Newborn care\n7 — HIV & PMTCT",
+        "ndebele": "Switched to English! How can I help you?\n\n1 — Pregnancy stages\n2 — Danger signs\n3 — Nutrition\n4 — Clinic visits\n5 — Labour & delivery\n6 — Newborn care\n7 — HIV & PMTCT"
+      }
+    },
+    {
+      "tag": "language_shona",
+      "patterns": [
+        "shona", "chiShona", "chishona", "ndishonese", "ndipindure muShona",
+        "taura chiShona", "ndoda chiShona", "shona please",
+        "switch to shona", "respond in shona", "speak shona"
+      ],
+      "responses": {
+        "english": "Tatenda! Ndichakupindura muChiShona.\n\n1 — Matanho emimba\n2 — Zviratidzo zvengozi\n3 — Chikafu chakanaka\n4 — Kuenda kuchipatara\n5 — Kubereka\n6 — Kuchengeta mwana mutsva\n7 — HIV nePMTCT",
+        "shona": "Tatenda! Ndichakupindura muChiShona.\n\n1 — Matanho emimba\n2 — Zviratidzo zvengozi\n3 — Chikafu chakanaka\n4 — Kuenda kuchipatara\n5 — Kubereka\n6 — Kuchengeta mwana mutsva\n7 — HIV nePMTCT",
+        "ndebele": "Tatenda! Ndichakupindura muChiShona.\n\n1 — Matanho emimba\n2 — Zviratidzo zvengozi\n3 — Chikafu chakanaka\n4 — Kuenda kuchipatara\n5 — Kubereka\n6 — Kuchengeta mwana mutsva\n7 — HIV nePMTCT"
+      }
+    },
+    {
+      "tag": "language_ndebele",
+      "patterns": [
+        "ndebele", "isindebele", "isiNdebele", "ndebele please",
+        "switch to ndebele", "respond in ndebele", "speak ndebele",
+        "ngifuna isindebele", "phendula ngesiNdebele"
+      ],
+      "responses": {
+        "english": "Kulungile! Ngizaphendula ngesiNdebele.\n\n1 — Izigaba zokukhulelwa\n2 — Izibonakaliso zengozi\n3 — Ukudla okuhle\n4 — Ukuyabona udokotela\n5 — Ukuzala\n6 — Ukunakekela ingane entsha\n7 — I-HIV le-PMTCT",
+        "shona": "Kulungile! Ngizaphendula ngesiNdebele.\n\n1 — Izigaba zokukhulelwa\n2 — Izibonakaliso zengozi\n3 — Ukudla okuhle\n4 — Ukuyabona udokotela\n5 — Ukuzala\n6 — Ukunakekela ingane entsha\n7 — I-HIV le-PMTCT",
+        "ndebele": "Kulungile! Ngizaphendula ngesiNdebele.\n\n1 — Izigaba zokukhulelwa\n2 — Izibonakaliso zengozi\n3 — Ukudla okuhle\n4 — Ukuyabona udokotela\n5 — Ukuzala\n6 — Ukunakekela ingane entsha\n7 — I-HIV le-PMTCT"
+      }
+    },
+    {
+      "tag": "emergency",
+      "patterns": [
+        "emergency", "help me", "urgent", "hurry", "quickly",
+        "i need help now", "something is very wrong", "very wrong",
+        "call doctor", "need ambulance", "ambulance",
+        "dying", "i think i am dying", "in pain now", "call nurse",
+        "ndibatsire", "ndingabatsirwa", "zvino zvakangurova",
+        "ndiri munhamo", "ngisiza", "ngisiza manje", "ngiswele usizo"
+      ],
+      "responses": {
+        "english": "EMERGENCY — PLEASE ACT NOW\n\nCall your nearest clinic or Village Health Worker IMMEDIATELY.\n\nZimbabwe Emergency:\n• Ambulance: 994 or 999\n• Parirenyatwa Hospital: +263 4 794 411\n• Sally Mugabe Hospital: +263 4 621 071\n\nWhile waiting for help:\n• Lie down on your left side\n• Keep warm\n• Send someone to get help\n• Do not eat or drink\n\nDo NOT delay. Maternal emergencies are life-threatening.\n\nMamaBot cannot replace emergency medical care.",
+        "shona": "NGOZI — ITAI ZVINO NEKUKURUMIDZA\n\nFona chipatara chiri pedyo kana VHW wako NEKUKURUMIDZA.\n\nNhamba dzeNgozi muZimbabwe:\n• Ambulance: 994 kana 999\n• Parirenyatwa Hospital: +263 4 794 411\n• Sally Mugabe Hospital: +263 4 621 071\n\nUchimirira rubatsiro:\n• Lala pasi divi rerudyi\n• Zvichengete kupisa\n• Tumira mumwe munhu kunotsvaga rubatsiro\n• Usadya kana kunwa\n\nUSAMIRA. Zvinetso zvemimba zvine njodzi yemoyo.\n\nMamaBot inogona kutsiva kurapwa kwechipatara.",
+        "ndebele": "ISIMO ESIPHUTHUMAYO — YENZA MANJE NGOKUSHESHA\n\nShayela isibhedlela esiseduze noma uMsebenzi Wezempilo NGOKUSHESHA.\n\nIzinombolo Eziphuthumayo eZimbabwe:\n• I-Ambulance: 994 noma 999\n• Parirenyatwa Hospital: +263 4 794 411\n• Sally Mugabe Hospital: +263 4 621 071\n\nUlindile usizo:\n• Lala phansi ohlangothini lwesandla sokhohlo\n• Zifudumeze\n• Thumela umuntu ukuyotholela usizo\n• Ungadli noma uphuze\n\nUNGALINDANGI. Izimo eziphuthumayo zokukhulelwa ziyingozi ekuphileni.\n\nUMamaBot angeke asinde njengokunakekelwa ezibhedlela."
+      }
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "overall_accuracy": 100.0,
+  "nlp_accuracy": 100.0,
+  "total_tests": 61,
+  "passed": 61,
+  "by_language": {
+    "en": {
+      "pass": 32,
+      "fail": 0
+    },
+    "sn": {
+      "pass": 18,
+      "fail": 0
+    },
+    "nd": {
+      "pass": 11,
+      "fail": 0
+    }
+  },
+  "by_intent": {
+    "greeting": {
+      "pass": 8,
+      "fail": 0
+    },
+    "pregnancy_stages": {
+      "pass": 7,
+      "fail": 0
+    },
+    "danger_signs": {
+      "pass": 6,
+      "fail": 0
+    },
+    "nutrition": {
+      "pass": 6,
+      "fail": 0
+    },
+    "antenatal_visits": {
+      "pass": 4,
+      "fail": 0
+    },
+    "find_clinic": {
+      "pass": 5,
+      "fail": 0
+    },
+    "labour_signs": {
+      "pass": 6,
+      "fail": 0
+    },
+    "postnatal_care": {
+      "pass": 5,
+      "fail": 0
+    },
+    "hiv_prevention": {
+      "pass": 5,
+      "fail": 0
+    },
+    "LANG_SWITCH": {
+      "pass": 3,
+      "fail": 0
+    },
+    "DISTRICT": {
+      "pass": 3,
+      "fail": 0
+    },
+    "NUMBER": {
+      "pass": 3,
+      "fail": 0
+    }
+  },
+  "timing": {
+    "avg_ms": 7.15,
+    "min_ms": 0.7,
+    "max_ms": 30.25,
+    "p95_ms": 28.82
+  },
+  "kpis": [
+    {
+      "id": "KPI 1",
+      "metric": "Intent classification accuracy",
+      "result": "100.0%",
+      "target": "\u2265 80%",
+      "status": "\u2705"
+    },
+    {
+      "id": "KPI 2",
+      "metric": "Response time (avg)",
+      "result": "7.15ms",
+      "target": "< 500ms",
+      "status": "\u2705"
+    },
+    {
+      "id": "KPI 3",
+      "metric": "English accuracy",
+      "result": "100%",
+      "target": "\u2265 80%",
+      "status": "\u2705"
+    },
+    {
+      "id": "KPI 4",
+      "metric": "Shona accuracy",
+      "result": "100%",
+      "target": "\u2265 70%",
+      "status": "\u2705"
+    },
+    {
+      "id": "KPI 5",
+      "metric": "Ndebele accuracy",
+      "result": "100%",
+      "target": "\u2265 70%",
+      "status": "\u2705"
+    },
+    {
+      "id": "KPI 6",
+      "metric": "District lookup (20 districts)",
+      "result": "100%",
+      "target": "100%",
+      "status": "\u2705"
+    },
+    {
+      "id": "KPI 7",
+      "metric": "Emergency detection",
+      "result": "100%",
+      "target": "100%",
+      "status": "\u2705"
+    },
+    {
+      "id": "KPI 8",
+      "metric": "Language switching",
+      "result": "100%",
+      "target": "100%",
+      "status": "\u2705"
+    },
+    {
+      "id": "KPI 9",
+      "metric": "Number shortcuts (1-8)",
+      "result": "100%",
+      "target": "100%",
+      "status": "\u2705"
+    }
+  ],
+  "failed_cases": []
+}

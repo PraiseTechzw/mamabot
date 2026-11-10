@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MamaBot – Health</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+:root{--blue:#1F4E79;--blue-mid:#2E74B5;--blue-light:#EBF3FB;--teal:#0D7C66;--amber:#92600A;--green:#166534;--green-light:#DCFCE7;--red:#991B1B;--red-light:#FEE2E2;--text:#111827;--muted:#6B7280;--border:#E5E7EB;--bg:#F9FAFB;--card:#fff;--radius:10px;--shadow:0 1px 4px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);--nav-h:56px;}
+*{box-sizing:border-box;margin:0;padding:0;}html{-webkit-text-size-adjust:100%;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh;}
+nav{position:sticky;top:0;z-index:100;background:var(--blue);height:var(--nav-h);display:flex;align-items:center;padding:0 1rem;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.nav-brand{color:#fff;font-weight:700;font-size:1rem;text-decoration:none;display:flex;align-items:center;gap:8px;flex-shrink:0;}.nav-brand i{color:#93C5FD;}
+.nav-spacer{flex:1;}.nav-links{display:flex;gap:2px;}
+.nav-links a{color:rgba(255,255,255,.7);text-decoration:none;font-size:.78rem;font-weight:500;padding:6px 10px;border-radius:6px;display:flex;align-items:center;gap:5px;transition:all .15s;white-space:nowrap;}
+.nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.12);color:#fff;}
+.nav-links .chat-link{background:rgba(233,30,140,.2);color:#F9A8D4;}.nav-links .chat-link:hover{background:rgba(233,30,140,.35);color:#fff;}
+.hamburger{display:none;background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:6px;}
+@media(max-width:640px){.hamburger{display:flex;align-items:center;justify-content:center;}.nav-links{display:none;position:fixed;top:var(--nav-h);left:0;right:0;background:var(--blue);flex-direction:column;padding:.5rem;box-shadow:0 4px 12px rgba(0,0,0,.3);z-index:99;}.nav-links.open{display:flex;}.nav-links a{font-size:.9rem;padding:10px 14px;}}
+.page{max-width:900px;margin:0 auto;padding:1.25rem 1rem;}
+.page-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem;margin-bottom:1.25rem;}
+.page-title{font-size:1.15rem;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:8px;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:7px;font-size:.78rem;font-weight:600;cursor:pointer;border:none;text-decoration:none;transition:all .15s;font-family:inherit;}
+.btn-ghost{background:transparent;color:var(--blue);border:1.5px solid var(--border);}.btn-ghost:hover{border-color:var(--blue);background:var(--blue-light);}
+.status-banner{display:flex;align-items:center;gap:12px;padding:.9rem 1.1rem;border-radius:var(--radius);margin-bottom:1.25rem;font-weight:600;font-size:.88rem;border:1.5px solid;}
+.s-ok{background:#F0FDF4;color:#166534;border-color:#BBF7D0;}
+.s-warn{background:#FFFBEB;color:#92600A;border-color:#FDE68A;}
+.s-err{background:#FEF2F2;color:#991B1B;border-color:#FECACA;}
+.pulse{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.p-ok{background:#16A34A;}.p-warn{background:#D97706;}.p-err{background:#DC2626;}
+.check-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-bottom:1.25rem;}
+@media(min-width:640px){.check-grid{grid-template-columns:repeat(3,1fr);}}
+.check-card{background:var(--card);border-radius:var(--radius);padding:1rem;box-shadow:var(--shadow);display:flex;align-items:flex-start;gap:12px;}
+.check-ico{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+.ico-ok{background:var(--green-light);color:#16A34A;}.ico-err{background:var(--red-light);color:#DC2626;}.ico-info{background:var(--blue-light);color:var(--blue);}
+.check-name{font-size:.7rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px;}
+.check-val{font-size:.85rem;font-weight:600;}.check-val.ok{color:#16A34A;}.check-val.err{color:#DC2626;}.check-val.info{color:var(--blue);}
+.check-sub{font-size:.7rem;color:var(--muted);margin-top:2px;}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:1rem;overflow:hidden;}
+.card-header{padding:.85rem 1rem;border-bottom:1px solid var(--border);}
+.card-title{font-size:.88rem;font-weight:600;color:var(--blue);display:flex;align-items:center;gap:7px;}.card-title i{color:var(--blue-mid);}
+.kv-row{display:flex;justify-content:space-between;align-items:center;padding:.7rem 1rem;border-top:1px solid var(--border);font-size:.82rem;flex-wrap:wrap;gap:.5rem;}
+.kv-row:first-child{border-top:none;}
+.kv-key{color:var(--muted);font-size:.8rem;}
+.kv-val{font-weight:600;font-family:'Courier New',monospace;font-size:.78rem;color:var(--text);word-break:break-all;}
+.ts{font-size:.75rem;color:var(--muted);}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="/admin"><i class="fa-solid fa-heart-pulse"></i> MamaBot</a>
+  <div class="nav-spacer"></div>
+  <div class="nav-links" id="nav-links">
+    <a href="/admin"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+    <a href="/api/messages"><i class="fa-solid fa-comments"></i> Messages</a>
+    <a href="/api/stats"><i class="fa-solid fa-chart-bar"></i> Stats</a>
+    <a href="/api/health" class="active"><i class="fa-solid fa-server"></i> Health</a>
+    <a href="/chat" class="chat-link"><i class="fa-solid fa-message"></i> Chat</a>
+    <a href="/admin/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+  </div>
+  <button class="hamburger" onclick="toggleNav()"><i class="fa-solid fa-bars" id="ham-icon"></i></button>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <div class="page-title"><i class="fa-solid fa-server"></i> System Health</div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="ts" id="last-check">Checking...</span>
+      <button class="btn btn-ghost" onclick="runCheck()"><i class="fa-solid fa-rotate"></i> Re-check</button>
+    </div>
+  </div>
+
+  <div class="status-banner s-ok" id="status-banner">
+    <div class="pulse p-ok" id="pulse"></div>
+    <span id="status-text">Checking system status...</span>
+  </div>
+
+  <div class="check-grid" id="check-grid">
+    <div class="check-card"><div class="check-ico ico-info"><i class="fa-solid fa-rotate fa-spin"></i></div><div><div class="check-name">Loading</div><div class="check-val info">–</div></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-title"><i class="fa-solid fa-sliders"></i> Configuration</div></div>
+    <div id="config-rows">
+      <div class="kv-row"><span class="kv-key">Loading...</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-title"><i class="fa-solid fa-list-check"></i> Deployment Checklist</div></div>
+    <div id="checklist-rows"></div>
+  </div>
+</div>
+
+<script>
+function toggleNav(){const nl=document.getElementById('nav-links');const ic=document.getElementById('ham-icon');nl.classList.toggle('open');ic.className=nl.classList.contains('open')?'fa-solid fa-xmark':'fa-solid fa-bars';}
+async function runCheck(){
+  document.getElementById('last-check').textContent='Checking...';
+  try{
+    const d=await(await fetch('/api/health/data')).json();
+    const ok=d.status==='ok',warn=d.status==='degraded';
+    const banner=document.getElementById('status-banner');
+    const pulse=document.getElementById('pulse');
+    banner.className='status-banner '+(ok?'s-ok':warn?'s-warn':'s-err');
+    pulse.className='pulse '+(ok?'p-ok':warn?'p-warn':'p-err');
+    document.getElementById('status-text').textContent=ok?'All systems operational':warn?'Some services degraded':'System error — check Render logs';
+
+    const checks=[
+      {ico:'fa-robot',label:'NLP Model',val:d.nlp_model||'–',ok:!(d.nlp_model||'').includes('error'),sub:`${d.training_samples||0} training samples`},
+      {ico:'fa-database',label:'Database',val:d.database||'–',ok:d.database!=='error',sub:'SQLite'},
+      {ico:'fa-plug',label:'Webhook',val:'Live',ok:true,sub:'/webhook/sms'},
+      {ico:'fa-clock',label:'Uptime',val:d.uptime||'–',ok:true,sub:'Since last deploy'},
+      {ico:'fa-brain',label:'Intents',val:(d.intent_count||0)+' classes',ok:true,sub:'From intents.json'},
+      {ico:'fa-bolt',label:'Response',val:d.response_time_ms?d.response_time_ms+'ms':'–',ok:true,sub:'NLP inference time'},
+    ];
+    document.getElementById('check-grid').innerHTML=checks.map(c=>`
+      <div class="check-card">
+        <div class="check-ico ${c.ok?'ico-ok':'ico-err'}"><i class="fa-solid ${c.ico}"></i></div>
+        <div>
+          <div class="check-name">${c.label}</div>
+          <div class="check-val ${c.ok?'ok':'err'}">${c.val}</div>
+          <div class="check-sub">${c.sub}</div>
+        </div>
+      </div>`).join('');
+
+    const host=window.location.origin;
+    document.getElementById('config-rows').innerHTML=[
+      ['Python version',d.python_version||'–'],
+      ['Flask env',d.flask_env||'production'],
+      ['Debug mode',d.debug||'False'],
+      ['Gunicorn workers',d.workers||'1 (sync)'],
+      ['Model cached',d.model_cached?'Yes':'No — retrains on startup'],
+      ['Training samples',d.training_samples||'–'],
+    ].map(([k,v])=>`<div class="kv-row"><span class="kv-key">${k}</span><span class="kv-val">${v}</span></div>`).join('');
+
+    document.getElementById('checklist-rows').innerHTML=[
+      ['Twilio webhook URL',host+'/webhook/sms',true],
+      ['Admin password','Set via ADMIN_PASSWORD env var on Render',true],
+      ['Secret key','Set via SECRET_KEY env var on Render',true],
+      ['WhatsApp sandbox','Configure at console.twilio.com',true],
+      ['Public chat URL',host+'/chat',true],
+    ].map(([k,v,ok])=>`<div class="kv-row"><span class="kv-key">${k}</span><span class="kv-val" style="color:${ok?'var(--blue)':'#DC2626'}">${v}</span></div>`).join('');
+
+    document.getElementById('last-check').textContent='Last checked: '+new Date().toLocaleTimeString();
+  }catch(e){
+    document.getElementById('status-banner').className='status-banner s-err';
+    document.getElementById('status-text').textContent='Could not reach health endpoint';
+    document.getElementById('last-check').textContent='Failed '+new Date().toLocaleTimeString();
+  }
+}
+runCheck();
+setInterval(runCheck,30000);
+</script>
+</body>
+</html>

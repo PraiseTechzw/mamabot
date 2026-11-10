@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MamaBot – Stats</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+:root{--blue:#1F4E79;--blue-mid:#2E74B5;--blue-light:#EBF3FB;--teal:#0D7C66;--teal-light:#E6F4F1;--amber:#92600A;--amber-light:#FEF3E2;--green:#166534;--green-light:#DCFCE7;--red:#991B1B;--red-light:#FEE2E2;--purple:#5B21B6;--purple-light:#EDE9FE;--text:#111827;--muted:#6B7280;--border:#E5E7EB;--bg:#F9FAFB;--card:#fff;--radius:10px;--shadow:0 1px 4px rgba(0,0,0,.08),0 4px 16px rgba(0,0,0,.06);--nav-h:56px;}
+*{box-sizing:border-box;margin:0;padding:0;}html{-webkit-text-size-adjust:100%;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh;}
+nav{position:sticky;top:0;z-index:100;background:var(--blue);height:var(--nav-h);display:flex;align-items:center;padding:0 1rem;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.nav-brand{color:#fff;font-weight:700;font-size:1rem;text-decoration:none;display:flex;align-items:center;gap:8px;flex-shrink:0;}.nav-brand i{color:#93C5FD;}
+.nav-spacer{flex:1;}.nav-links{display:flex;gap:2px;}
+.nav-links a{color:rgba(255,255,255,.7);text-decoration:none;font-size:.78rem;font-weight:500;padding:6px 10px;border-radius:6px;display:flex;align-items:center;gap:5px;transition:all .15s;white-space:nowrap;}
+.nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.12);color:#fff;}
+.nav-links .chat-link{background:rgba(233,30,140,.2);color:#F9A8D4;}.nav-links .chat-link:hover{background:rgba(233,30,140,.35);color:#fff;}
+.hamburger{display:none;background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:6px;}
+@media(max-width:640px){.hamburger{display:flex;align-items:center;justify-content:center;}.nav-links{display:none;position:fixed;top:var(--nav-h);left:0;right:0;background:var(--blue);flex-direction:column;padding:.5rem;box-shadow:0 4px 12px rgba(0,0,0,.3);z-index:99;}.nav-links.open{display:flex;}.nav-links a{font-size:.9rem;padding:10px 14px;}}
+.page{max-width:1100px;margin:0 auto;padding:1.25rem 1rem;}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:.5rem;}
+.page-title{font-size:1.15rem;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:8px;}
+.ts{font-size:.75rem;color:var(--muted);}
+.grid-4{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-bottom:1.25rem;}
+@media(min-width:640px){.grid-4{grid-template-columns:repeat(4,1fr);}}
+.stat-card{background:var(--card);border-radius:var(--radius);padding:1rem;box-shadow:var(--shadow);border-top:3px solid var(--blue);}
+.stat-card.green{border-color:#16A34A;}.stat-card.red{border-color:#DC2626;}.stat-card.teal{border-color:#0D7C66;}.stat-card.amber{border-color:#D97706;}
+.sl{font-size:.68rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.35rem;}
+.sv{font-size:1.75rem;font-weight:700;color:var(--blue);line-height:1;}
+.stat-card.green .sv{color:#16A34A;}.stat-card.red .sv{color:#DC2626;}.stat-card.teal .sv{color:#0D7C66;}.stat-card.amber .sv{color:#D97706;}
+.ss{font-size:.68rem;color:var(--muted);margin-top:.2rem;}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:1rem;overflow:hidden;}
+.card-header{padding:.85rem 1rem;border-bottom:1px solid var(--border);}
+.card-title{font-size:.88rem;font-weight:600;color:var(--blue);display:flex;align-items:center;gap:7px;}.card-title i{color:var(--blue-mid);}
+.card-body{padding:1rem;}
+.two-col{display:grid;grid-template-columns:1fr;gap:1rem;}
+@media(min-width:700px){.two-col{grid-template-columns:1fr 1fr;}}
+.intent-bars{display:flex;flex-direction:column;gap:9px;}
+.ir{display:grid;grid-template-columns:1fr 2fr 40px 36px;align-items:center;gap:8px;}
+@media(max-width:400px){.ir{grid-template-columns:1fr 2fr 36px;}.ip{display:none;}}
+.il{font-size:.78rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar-track{background:var(--bg);border-radius:4px;height:16px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:4px;}
+.ic{font-size:.75rem;color:var(--muted);text-align:right;font-weight:600;}
+.ip{font-size:.7rem;color:var(--muted);text-align:right;}
+.lang-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.lang-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.lang-label{font-size:.82rem;flex:1;font-weight:500;}
+.lang-bar-wrap{flex:2;background:var(--bg);border-radius:4px;height:14px;overflow:hidden;}
+.lang-bar-fill{height:100%;border-radius:4px;}
+.lang-count{font-size:.78rem;color:var(--muted);min-width:32px;text-align:right;}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table{width:100%;border-collapse:collapse;font-size:.8rem;}
+th{background:var(--bg);color:var(--muted);font-weight:600;text-align:left;padding:.55rem .85rem;font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;}
+td{padding:.65rem .85rem;border-top:1px solid var(--border);}
+tr:hover td{background:#FAFAFA;}
+.empty{text-align:center;padding:2rem;color:var(--muted);}
+.empty i{font-size:1.8rem;display:block;margin-bottom:.5rem;opacity:.35;}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-brand" href="/admin"><i class="fa-solid fa-heart-pulse"></i> MamaBot</a>
+  <div class="nav-spacer"></div>
+  <div class="nav-links" id="nav-links">
+    <a href="/admin"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+    <a href="/api/messages"><i class="fa-solid fa-comments"></i> Messages</a>
+    <a href="/api/stats" class="active"><i class="fa-solid fa-chart-bar"></i> Stats</a>
+    <a href="/api/health"><i class="fa-solid fa-server"></i> Health</a>
+    <a href="/chat" class="chat-link"><i class="fa-solid fa-message"></i> Chat</a>
+    <a href="/admin/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+  </div>
+  <button class="hamburger" onclick="toggleNav()"><i class="fa-solid fa-bars" id="ham-icon"></i></button>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <div class="page-title"><i class="fa-solid fa-chart-bar"></i> Statistics</div>
+    <span class="ts" id="refresh-ts">Loading...</span>
+  </div>
+
+  <div class="grid-4" id="stat-cards">
+    <div class="stat-card"><div class="sl">Total Messages</div><div class="sv">–</div></div>
+    <div class="stat-card teal"><div class="sl">Unique Users</div><div class="sv">–</div></div>
+    <div class="stat-card green"><div class="sl">Success Rate</div><div class="sv">–</div></div>
+    <div class="stat-card red"><div class="sl">Fallback Rate</div><div class="sv">–</div></div>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-header"><div class="card-title"><i class="fa-solid fa-chart-bar"></i> Intent Breakdown</div></div>
+      <div class="card-body"><div class="intent-bars" id="intent-bars"><div class="empty"><i class="fa-solid fa-chart-bar"></i>Loading...</div></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title"><i class="fa-solid fa-globe"></i> Language Distribution</div></div>
+      <div class="card-body" id="lang-section"><div class="empty"><i class="fa-solid fa-globe"></i>Loading...</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><div class="card-title"><i class="fa-solid fa-triangle-exclamation" style="color:#DC2626"></i> Fallback Messages <span style="font-weight:400;color:var(--muted);font-size:.75rem;margin-left:4px">— add to intents.json</span></div></div>
+    <div id="fallback-section"><div class="empty" style="padding:1.5rem"><i class="fa-solid fa-rotate fa-spin"></i>Loading...</div></div>
+  </div>
+</div>
+
+<script>
+function toggleNav(){const nl=document.getElementById('nav-links');const ic=document.getElementById('ham-icon');nl.classList.toggle('open');ic.className=nl.classList.contains('open')?'fa-solid fa-xmark':'fa-solid fa-bars';}
+const INTENT_COLORS={greeting:'#2E74B5',danger_signs:'#DC2626',nutrition:'#16A34A',clinic_visits:'#D97706',labour_delivery:'#EA580C',newborn_care:'#7C3AED',hiv_pmtct:'#0D7C66',fallback:'#DC2626',thanks:'#16A34A',language_english:'#7C3AED',language_shona:'#7C3AED',language_ndebele:'#7C3AED',emergency:'#DC2626',pregnancy_stages:'#1D4ED8'};
+const LANG_COLORS={english:'#1F4E79',shona:'#0D7C66',ndebele:'#D97706',web:'#7C3AED',unknown:'#9CA3AF'};
+
+async function loadStats(){
+  try{
+    const d=await(await fetch('/api/stats/data')).json();
+    const total=d.total_messages||0,users=d.unique_users||0;
+    const ints=d.intent_counts||{},fb=ints.fallback||0;
+    const inb=d.inbound_count||total;
+    const fbR=inb>0?Math.round(fb/inb*100):0;
+    document.getElementById('stat-cards').innerHTML=`
+      <div class="stat-card"><div class="sl">Total Messages</div><div class="sv">${total}</div><div class="ss">All time</div></div>
+      <div class="stat-card teal"><div class="sl">Unique Users</div><div class="sv">${users}</div><div class="ss">Phone numbers</div></div>
+      <div class="stat-card green"><div class="sl">Success Rate</div><div class="sv">${100-fbR}%</div><div class="ss">Recognised intents</div></div>
+      <div class="stat-card red"><div class="sl">Fallback Rate</div><div class="sv">${fbR}%</div><div class="ss">${fb} unrecognised</div></div>`;
+
+    const sorted=Object.entries(ints).sort((a,b)=>b[1]-a[1]);
+    const maxV=sorted.length?sorted[0][1]:1,totalI=sorted.reduce((s,[,v])=>s+v,0)||1;
+    document.getElementById('intent-bars').innerHTML=sorted.length?sorted.map(([intent,count])=>{
+      const pct=Math.round(count/maxV*100),share=Math.round(count/totalI*100);
+      const col=INTENT_COLORS[intent]||'#6B7280';
+      return `<div class="ir">
+        <div class="il">${intent.replace(/_/g,' ')}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${col}33;border-left:3px solid ${col}"></div></div>
+        <div class="ic">${count}</div>
+        <div class="ip">${share}%</div>
+      </div>`;
+    }).join(''):'<div class="empty"><i class="fa-solid fa-chart-bar"></i>No data yet</div>';
+
+    const langs=d.language_counts||{};
+    const langEntries=Object.entries(langs).sort((a,b)=>b[1]-a[1]);
+    const maxL=langEntries.length?langEntries[0][1]:1;
+    document.getElementById('lang-section').innerHTML=langEntries.length?langEntries.map(([lang,count])=>{
+      const pct=Math.round(count/maxL*100),col=LANG_COLORS[lang]||'#9CA3AF';
+      return `<div class="lang-row">
+        <div class="lang-dot" style="background:${col}"></div>
+        <div class="lang-label">${lang.charAt(0).toUpperCase()+lang.slice(1)}</div>
+        <div class="lang-bar-wrap"><div class="lang-bar-fill" style="width:${pct}%;background:${col}"></div></div>
+        <div class="lang-count">${count}</div>
+      </div>`;
+    }).join(''):'<div class="empty"><i class="fa-solid fa-globe"></i>No language data yet</div>';
+
+    const fbs=d.recent_fallbacks||[];
+    document.getElementById('fallback-section').innerHTML=fbs.length?`
+      <div class="table-wrap"><table>
+        <thead><tr><th>Time</th><th>Message — add to intents.json</th><th>Channel</th></tr></thead>
+        <tbody>${fbs.map(m=>`<tr>
+          <td style="font-size:.7rem;color:var(--muted);white-space:nowrap">${(m.created_at||'').slice(0,16).replace('T',' ')}</td>
+          <td><code style="font-size:.78rem;background:var(--bg);padding:2px 7px;border-radius:4px">${m.content||''}</code></td>
+          <td style="font-size:.72rem;color:${m.channel==='whatsapp'?'#16A34A':m.channel==='web'?'#7C3AED':'var(--blue-mid)'};font-weight:600">${m.channel||'–'}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>`:'<div class="empty" style="padding:1.25rem"><i class="fa-solid fa-circle-check" style="color:#16A34A"></i><span style="color:#16A34A;display:block;margin-top:.4rem">No recent fallbacks</span></div>';
+
+    document.getElementById('refresh-ts').textContent='Updated '+new Date().toLocaleTimeString();
+  }catch(e){console.error(e);}
+}
+loadStats();
+setInterval(loadStats,30000);
+</script>
+</body>
+</html>

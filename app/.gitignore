@@ -1,0 +1,6 @@
+.env
+*.pyc
+__pycache__/
+*.db
+venv/
+nlp_model.pkl 
