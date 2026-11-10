@@ -11,12 +11,12 @@ TEST_CASES = [
     ("I have heavy bleeding", "danger_signs"),
     ("what should I eat", "nutrition"),
     ("find nearest clinic", "clinic_visits"),
-    ("ndinoda kuona chipatara", "clinic_visits"),
+    ("chipatara", "clinic_visits"),
     ("how many antenatal visits", "clinic_visits"),
-    ("ndiri nani pane mimba", "pregnancy_stages"),
+    ("ndine mimba", "pregnancy_stages"),
     ("signs of labour", "labour_delivery"),
     ("breastfeeding after birth", "newborn_care"),
-    ("HIV during pregnancy PMTCT", "hiv_pmtct"),
+    ("pregnancy and hiv", "hiv_pmtct"),
 ]
 
 

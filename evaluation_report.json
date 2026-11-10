@@ -1,142 +1,547 @@
 {
-  "overall_accuracy": 100.0,
-  "nlp_accuracy": 100.0,
-  "total_tests": 61,
-  "passed": 61,
-  "by_language": {
-    "en": {
-      "pass": 32,
-      "fail": 0
+  "generated_at": "2026-11-10T20:57:57.609139+00:00",
+  "evaluation": {
+    "method": "stratified random holdout of intent patterns",
+    "source": "data/intents/intents.json",
+    "random_state": 42,
+    "test_fraction": 0.2,
+    "pattern_count": 446,
+    "training_pattern_count": 356,
+    "test_pattern_count": 90,
+    "intent_count": 13,
+    "limitations": [
+      "Pattern-level classification only; patterns are curated examples, not an independent user corpus.",
+      "Language identification, clinical correctness, usability, and message delivery are not evaluated."
+    ]
+  },
+  "metrics": {
+    "accuracy": 0.4888888888888889,
+    "macro_f1": 0.4980567623483945,
+    "per_intent": {
+      "clinic_visits": {
+        "precision": 0.6666666666666666,
+        "recall": 0.2222222222222222,
+        "f1-score": 0.3333333333333333,
+        "support": 9.0
+      },
+      "danger_signs": {
+        "precision": 0.2727272727272727,
+        "recall": 0.9375,
+        "f1-score": 0.4225352112676056,
+        "support": 16.0
+      },
+      "emergency": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 4.0
+      },
+      "greeting": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 8.0
+      },
+      "hiv_pmtct": {
+        "precision": 1.0,
+        "recall": 0.5714285714285714,
+        "f1-score": 0.7272727272727273,
+        "support": 7.0
+      },
+      "labour_delivery": {
+        "precision": 1.0,
+        "recall": 0.42857142857142855,
+        "f1-score": 0.6,
+        "support": 7.0
+      },
+      "language_english": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 2.0
+      },
+      "language_ndebele": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 2.0
+      },
+      "language_shona": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1-score": 1.0,
+        "support": 2.0
+      },
+      "newborn_care": {
+        "precision": 0.75,
+        "recall": 0.6666666666666666,
+        "f1-score": 0.7058823529411765,
+        "support": 9.0
+      },
+      "nutrition": {
+        "precision": 0.75,
+        "recall": 0.2727272727272727,
+        "f1-score": 0.4,
+        "support": 11.0
+      },
+      "pregnancy_stages": {
+        "precision": 0.8333333333333334,
+        "recall": 0.625,
+        "f1-score": 0.7142857142857143,
+        "support": 8.0
+      },
+      "thanks": {
+        "precision": 1.0,
+        "recall": 0.4,
+        "f1-score": 0.5714285714285714,
+        "support": 5.0
+      }
     },
-    "sn": {
-      "pass": 18,
-      "fail": 0
-    },
-    "nd": {
-      "pass": 11,
-      "fail": 0
+    "confusion_matrix": {
+      "labels": [
+        "clinic_visits",
+        "danger_signs",
+        "emergency",
+        "greeting",
+        "hiv_pmtct",
+        "labour_delivery",
+        "language_english",
+        "language_ndebele",
+        "language_shona",
+        "newborn_care",
+        "nutrition",
+        "pregnancy_stages",
+        "thanks"
+      ],
+      "values": [
+        [
+          2,
+          5,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        [
+          0,
+          15,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          8,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          3,
+          0,
+          0,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          3,
+          0,
+          0,
+          0,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          6,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          7,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          3,
+          0,
+          0
+        ],
+        [
+          0,
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          5,
+          0
+        ],
+        [
+          0,
+          2,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2
+        ]
+      ]
     }
   },
-  "by_intent": {
-    "greeting": {
-      "pass": 8,
-      "fail": 0
+  "failed_cases": [
+    {
+      "pattern": "1",
+      "expected": "pregnancy_stages",
+      "predicted": "danger_signs"
     },
-    "pregnancy_stages": {
-      "pass": 7,
-      "fail": 0
+    {
+      "pattern": "syphilis",
+      "expected": "hiv_pmtct",
+      "predicted": "danger_signs"
     },
-    "danger_signs": {
-      "pass": 6,
-      "fail": 0
+    {
+      "pattern": "arvs",
+      "expected": "hiv_pmtct",
+      "predicted": "danger_signs"
     },
-    "nutrition": {
-      "pass": 6,
-      "fail": 0
+    {
+      "pattern": "mwana haachisimudzi",
+      "expected": "danger_signs",
+      "predicted": "newborn_care"
     },
-    "antenatal_visits": {
-      "pass": 4,
-      "fail": 0
+    {
+      "pattern": "nutritoin",
+      "expected": "nutrition",
+      "predicted": "danger_signs"
     },
-    "find_clinic": {
-      "pass": 5,
-      "fail": 0
+    {
+      "pattern": "sawubona",
+      "expected": "greeting",
+      "predicted": "danger_signs"
     },
-    "labour_signs": {
-      "pass": 6,
-      "fail": 0
+    {
+      "pattern": "jaundice",
+      "expected": "newborn_care",
+      "predicted": "danger_signs"
     },
-    "postnatal_care": {
-      "pass": 5,
-      "fail": 0
+    {
+      "pattern": "urgent",
+      "expected": "emergency",
+      "predicted": "danger_signs"
     },
-    "hiv_prevention": {
-      "pass": 5,
-      "fail": 0
+    {
+      "pattern": "back",
+      "expected": "greeting",
+      "predicted": "danger_signs"
     },
-    "LANG_SWITCH": {
-      "pass": 3,
-      "fail": 0
+    {
+      "pattern": "what to bring",
+      "expected": "clinic_visits",
+      "predicted": "nutrition"
     },
-    "DISTRICT": {
-      "pass": 3,
-      "fail": 0
+    {
+      "pattern": "how many visits",
+      "expected": "clinic_visits",
+      "predicted": "pregnancy_stages"
     },
-    "NUMBER": {
-      "pass": 3,
-      "fail": 0
+    {
+      "pattern": "vegetables",
+      "expected": "nutrition",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "manheru",
+      "expected": "greeting",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "kudzivirira kutapurira",
+      "expected": "hiv_pmtct",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "supplements",
+      "expected": "nutrition",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "emergency",
+      "expected": "emergency",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "ndatenda",
+      "expected": "thanks",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "yes",
+      "expected": "greeting",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "ukumitha",
+      "expected": "pregnancy_stages",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "ngibelethile",
+      "expected": "newborn_care",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "salibonani",
+      "expected": "greeting",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "zvokudya",
+      "expected": "nutrition",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "hy",
+      "expected": "greeting",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "good",
+      "expected": "thanks",
+      "predicted": "greeting"
+    },
+    {
+      "pattern": "zviratidzo zvekubereka",
+      "expected": "labour_delivery",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "ndebele",
+      "expected": "language_ndebele",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "zuva rangu rekuenda",
+      "expected": "clinic_visits",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "delivery",
+      "expected": "labour_delivery",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "mamuka sei",
+      "expected": "greeting",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "ndinobereka riini",
+      "expected": "labour_delivery",
+      "predicted": "clinic_visits"
+    },
+    {
+      "pattern": "quickly",
+      "expected": "emergency",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "harare",
+      "expected": "clinic_visits",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "udokotela",
+      "expected": "clinic_visits",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "nutrtion",
+      "expected": "nutrition",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "ukuncelisa",
+      "expected": "nutrition",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "immunization",
+      "expected": "newborn_care",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "maririzano",
+      "expected": "labour_delivery",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "ok",
+      "expected": "greeting",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "ngiswele usizo",
+      "expected": "emergency",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "ncelisa",
+      "expected": "nutrition",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "how is my baby growing",
+      "expected": "pregnancy_stages",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "karoi",
+      "expected": "clinic_visits",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "bindura",
+      "expected": "clinic_visits",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "siyabonga",
+      "expected": "thanks",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "speak ndebele",
+      "expected": "language_ndebele",
+      "predicted": "danger_signs"
+    },
+    {
+      "pattern": "milk for baby",
+      "expected": "nutrition",
+      "predicted": "newborn_care"
     }
-  },
-  "timing": {
-    "avg_ms": 7.15,
-    "min_ms": 0.7,
-    "max_ms": 30.25,
-    "p95_ms": 28.82
-  },
-  "kpis": [
-    {
-      "id": "KPI 1",
-      "metric": "Intent classification accuracy",
-      "result": "100.0%",
-      "target": "\u2265 80%",
-      "status": "\u2705"
-    },
-    {
-      "id": "KPI 2",
-      "metric": "Response time (avg)",
-      "result": "7.15ms",
-      "target": "< 500ms",
-      "status": "\u2705"
-    },
-    {
-      "id": "KPI 3",
-      "metric": "English accuracy",
-      "result": "100%",
-      "target": "\u2265 80%",
-      "status": "\u2705"
-    },
-    {
-      "id": "KPI 4",
-      "metric": "Shona accuracy",
-      "result": "100%",
-      "target": "\u2265 70%",
-      "status": "\u2705"
-    },
-    {
-      "id": "KPI 5",
-      "metric": "Ndebele accuracy",
-      "result": "100%",
-      "target": "\u2265 70%",
-      "status": "\u2705"
-    },
-    {
-      "id": "KPI 6",
-      "metric": "District lookup (20 districts)",
-      "result": "100%",
-      "target": "100%",
-      "status": "\u2705"
-    },
-    {
-      "id": "KPI 7",
-      "metric": "Emergency detection",
-      "result": "100%",
-      "target": "100%",
-      "status": "\u2705"
-    },
-    {
-      "id": "KPI 8",
-      "metric": "Language switching",
-      "result": "100%",
-      "target": "100%",
-      "status": "\u2705"
-    },
-    {
-      "id": "KPI 9",
-      "metric": "Number shortcuts (1-8)",
-      "result": "100%",
-      "target": "100%",
-      "status": "\u2705"
-    }
-  ],
-  "failed_cases": []
+  ]
 }

@@ -60,6 +60,9 @@ supporting study records.
 `python evaluate.py` performs a reproducible, fixed-seed, stratified 80/20 split
 of the configured intent phrases and writes `evaluation_report.json`. The
 phrases are curated examples, not an independently collected evaluation set.
+The current recorded run scored 48.9% accuracy and 49.8% macro-F1 on 90 held-out
+patterns. This is weak pattern-classification performance, not evidence that the
+chatbot can reliably interpret real patient messages.
 Neither command evaluates correctness of medical advice, Shona/Ndebele
 naturalness, safety outcomes, user acceptance, provider delivery, or deployed
 latency.

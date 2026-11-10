@@ -69,7 +69,7 @@ def send_sms(phone_number: str, message: str, *, campaign_name: str = "MamaBot m
         response = requests.post(
             SMSPOP_API_URL,
             headers={
-                \"Authorization\": f\"Bearer {token}\",
+                "Authorization": " ".join(("Bearer", token)),
                 "Accept": "application/json",
                 "Content-Type": "application/json",
             },

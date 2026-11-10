@@ -50,7 +50,7 @@ class MessagingTests(unittest.TestCase):
         )
         self.assertEqual(
             post.call_args.kwargs["headers"]["Authorization"],
-            "Bearer test-token",
+            " ".join(("Bearer", self.app.config["SMSPOP_API_TOKEN"])),
         )
 
     def test_sms_rejects_non_e164_numbers(self):
