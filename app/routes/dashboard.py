@@ -5,6 +5,7 @@ Admin pages + public chat endpoint — Supabase version.
 
 from flask import Blueprint, render_template, jsonify, request, session, redirect
 from app.routes.auth import login_required
+from app.services.clinical_safety import with_safety_notice
 import json, os, time, logging, sys
 
 logger       = logging.getLogger(__name__)
@@ -42,6 +43,18 @@ def _uptime():
 @dashboard_bp.route("/chat")
 def page_chat():
     return render_template("chat.html")
+
+
+@dashboard_bp.route("/healthz")
+def readiness():
+    """Public readiness probe for hosting platforms."""
+    from app.db import test_connection
+
+    database_ok, _ = test_connection()
+    status = "ok" if database_ok else "not_ready"
+    return jsonify({"status": status, "checks": {"database": status}}), (
+        200 if database_ok else 503
+    )
 
 
 @dashboard_bp.route("/chat/send", methods=["POST"])
@@ -93,6 +106,7 @@ def chat_send():
             if intent != "fallback"
             else engine._fallback_response(language)
         )
+        response_text = with_safety_notice(response_text)
 
         # Get localised quick replies for the client
         quick_replies = engine.get_quick_replies(language)
@@ -184,19 +198,45 @@ def api_stats_data():
 @login_required
 def api_health_data():
     from app.db import test_connection
+    from flask import current_app
+
     result = {
         "status":           "ok",
         "uptime":           _uptime(),
         "training_samples": _count_samples(),
         "intent_count":     _count_intents(),
-        "webhook":          "Live",
-        "scheduler":        "Running",
+        "webhook":          (
+            "Twilio signature verification configured"
+            if current_app.config.get("TWILIO_AUTH_TOKEN")
+            else "Twilio webhook not configured"
+        ),
+        "scheduler":        "Separate worker process (not monitored)",
         "python_version":   sys.version.split()[0],
-        "flask_env":        os.environ.get("FLASK_ENV", "production"),
-        "debug":            str(os.environ.get("FLASK_DEBUG", "False")),
+        "flask_env":        os.environ.get("FLASK_ENV", "development"),
+        "debug":            str(current_app.debug),
         "workers":          "1 (sync/gunicorn)",
         "model_cached":     os.path.exists(MODEL_PATH),
         "database_type":    "Supabase (REST API)",
+        "smspop_configured": bool(
+            current_app.config.get("SMSPOP_API_TOKEN")
+            and current_app.config.get("SMSPOP_SENDER_ID")
+        ),
+        "sms_delivery_reports_configured": bool(
+            current_app.config.get("SMSPOP_DELIVERY_REPORT_URL")
+            and current_app.config.get("SMSPOP_WEBHOOK_SECRET")
+        ),
+        "twilio_whatsapp_configured": all(
+            current_app.config.get(name)
+            for name in (
+                "TWILIO_ACCOUNT_SID",
+                "TWILIO_AUTH_TOKEN",
+                "TWILIO_WHATSAPP_NUMBER",
+                "TWILIO_WHATSAPP_REMINDER_CONTENT_SID",
+            )
+        ),
+        "twilio_webhook_configured": bool(
+            current_app.config.get("TWILIO_AUTH_TOKEN")
+        ),
     }
     t0 = time.time()
     try:
@@ -210,6 +250,7 @@ def api_health_data():
 
     db_ok, db_msg = test_connection()
     result["database"] = db_msg
+    result["database_ok"] = db_ok
     if not db_ok:
         result["status"] = "degraded"
 

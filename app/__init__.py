@@ -6,7 +6,7 @@ Flask application factory — Supabase version (no SQLAlchemy).
 import os
 import secrets
 from flask import Flask
-from config import config
+from config import config, validate_production_config
 from datetime import timedelta
 
 
@@ -14,12 +14,10 @@ def create_app(config_name="default"):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config[config_name])
 
+    if config_name == "production":
+        validate_production_config(app.config)
     if not app.config.get("SECRET_KEY"):
-        if config_name == "production":
-            raise RuntimeError("SECRET_KEY must be configured in production")
         app.config["SECRET_KEY"] = secrets.token_hex(32)
-    if config_name == "production" and not app.config.get("ADMIN_PASSWORD"):
-        raise RuntimeError("ADMIN_PASSWORD must be configured in production")
     app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=8)
 
     os.makedirs(app.instance_path, exist_ok=True)

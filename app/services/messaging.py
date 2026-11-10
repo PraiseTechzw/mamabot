@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-import logging
 import hashlib
 import hmac
 import json
+import logging
 import re
 import time
 from dataclasses import dataclass
@@ -69,7 +69,7 @@ def send_sms(phone_number: str, message: str, *, campaign_name: str = "MamaBot m
         response = requests.post(
             SMSPOP_API_URL,
             headers={
-                "Authorization": f"Bearer {token}",
+                \"Authorization\": f\"Bearer {token}\",
                 "Accept": "application/json",
                 "Content-Type": "application/json",
             },

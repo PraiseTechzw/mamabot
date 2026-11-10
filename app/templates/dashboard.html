@@ -278,8 +278,8 @@ async function loadHealth(){
     document.getElementById('health-ts').textContent=new Date().toLocaleTimeString();
     const items=[
       {icon:'fa-robot',label:'NLP Model',val:d.nlp_model||'–',ok:!((d.nlp_model||'').includes('error'))},
-      {icon:'fa-database',label:'Database',val:d.database||'–',ok:d.database!=='error'},
-      {icon:'fa-plug',label:'Webhook',val:'Live',ok:true},
+      {icon:'fa-database',label:'Database',val:d.database||'–',ok:!!d.database_ok},
+      {icon:'fa-plug',label:'Webhook',val:d.webhook||'–',ok:true},
       {icon:'fa-clock',label:'Uptime',val:d.uptime||'–',ok:true},
       {icon:'fa-brain',label:'Intents',val:(d.intent_count||'–')+' loaded',ok:true},
       {icon:'fa-microchip',label:'Samples',val:d.training_samples||'–',ok:true},

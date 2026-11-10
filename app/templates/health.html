@@ -108,8 +108,8 @@ async function runCheck(){
 
     const checks=[
       {ico:'fa-robot',label:'NLP Model',val:d.nlp_model||'–',ok:!(d.nlp_model||'').includes('error'),sub:`${d.training_samples||0} training samples`},
-      {ico:'fa-database',label:'Database',val:d.database||'–',ok:d.database!=='error',sub:'SQLite'},
-      {ico:'fa-plug',label:'Webhook',val:'Live',ok:true,sub:'/webhook/sms'},
+      {ico:'fa-database',label:'Database',val:d.database||'–',ok:!!d.database_ok,sub:d.database_type||'Supabase'},
+      {ico:'fa-plug',label:'Twilio webhook',val:d.webhook||'–',ok:!!d.twilio_webhook_configured,sub:'Signature verification'},
       {ico:'fa-clock',label:'Uptime',val:d.uptime||'–',ok:true,sub:'Since last deploy'},
       {ico:'fa-brain',label:'Intents',val:(d.intent_count||0)+' classes',ok:true,sub:'From intents.json'},
       {ico:'fa-bolt',label:'Response',val:d.response_time_ms?d.response_time_ms+'ms':'–',ok:true,sub:'NLP inference time'},
@@ -132,13 +132,17 @@ async function runCheck(){
       ['Gunicorn workers',d.workers||'1 (sync)'],
       ['Model cached',d.model_cached?'Yes':'No — retrains on startup'],
       ['Training samples',d.training_samples||'–'],
+      ['SMSPoP outbound',d.smspop_configured?'Configured':'Not configured (optional)'],
+      ['SMS delivery reports',d.sms_delivery_reports_configured?'Configured':'Not configured (optional)'],
+      ['Twilio WhatsApp reminders',d.twilio_whatsapp_configured?'Configured':'Not configured (optional)'],
     ].map(([k,v])=>`<div class="kv-row"><span class="kv-key">${k}</span><span class="kv-val">${v}</span></div>`).join('');
 
     document.getElementById('checklist-rows').innerHTML=[
-      ['Twilio webhook URL',host+'/webhook/sms',true],
+      ['Readiness URL',host+'/healthz',true],
+      ['Twilio webhook URL',host+'/webhook/twilio',!!d.twilio_webhook_configured],
       ['Admin password','Set via ADMIN_PASSWORD env var on Render',true],
       ['Secret key','Set via SECRET_KEY env var on Render',true],
-      ['WhatsApp sandbox','Configure at console.twilio.com',true],
+      ['WhatsApp reminders',d.twilio_whatsapp_configured?'Configured':'Optional — not configured',!!d.twilio_whatsapp_configured],
       ['Public chat URL',host+'/chat',true],
     ].map(([k,v,ok])=>`<div class="kv-row"><span class="kv-key">${k}</span><span class="kv-val" style="color:${ok?'var(--blue)':'#DC2626'}">${v}</span></div>`).join('');
 

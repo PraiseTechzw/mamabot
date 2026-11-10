@@ -6,11 +6,14 @@ MamaBot — handles:
   3. Africa's Talking → POST /webhook/at   (Zimbabwe SMS — Econet/NetOne/Telecel)
 """
 
-from flask import Blueprint, request, Response, jsonify
+from flask import Blueprint, current_app, request, Response, jsonify
+from twilio.request_validator import RequestValidator
 from twilio.twiml.messaging_response import MessagingResponse
 import logging
 import os
 import requests as http
+
+from app.services.clinical_safety import SAFETY_NOTICE, with_safety_notice
 
 logger     = logging.getLogger(__name__)
 webhook_bp = Blueprint("webhook", __name__)
@@ -30,9 +33,24 @@ def _mem_set(phone, language, last_intent):
 # ── SMS response formatter ────────────────────────────────────────────────────
 SMS_MAX = 459  # 3 segments, comfortable read on basic phone
 
-def _sms_format(text: str) -> str:
+def _sms_format(text: str, *, include_safety_notice: bool = False) -> str:
     """Strip markdown, trim to SMS length."""
     text = text.replace("*", "").replace("_", "")
+    if include_safety_notice:
+        notice_suffix = f"\n\n{SAFETY_NOTICE}"
+        budget = SMS_MAX - len(notice_suffix)
+        if len(text) > budget:
+            truncation_suffix = "\n\nReply 1-7 for topics."
+            budget -= len(truncation_suffix)
+            trimmed = text[:budget]
+            last_nl = trimmed.rfind("\n")
+            last_dot = trimmed.rfind(". ")
+            cut = max(last_nl, last_dot)
+            if cut > budget // 2:
+                trimmed = trimmed[:cut]
+            return f"{trimmed.strip()}{truncation_suffix}{notice_suffix}"
+        return f"{text}{notice_suffix}"
+
     if len(text) <= SMS_MAX:
         return text
     trimmed  = text[:SMS_MAX]
@@ -146,7 +164,11 @@ def process_message(body: str, phone: str, channel: str) -> str:
     # Clinic lookup bypasses NLP
     clinic = lookup_clinic(body, language)
     if clinic:
-        reply = clinic if channel == "whatsapp" else _sms_format(clinic)
+        reply = (
+            _sms_format(clinic, include_safety_notice=True)
+            if channel == "sms"
+            else with_safety_notice(clinic)
+        )
         save_state(phone, language, "clinic_visits")
         log_db(phone, body, reply, "clinic_visits", channel, language)
         return reply
@@ -163,9 +185,10 @@ def process_message(body: str, phone: str, channel: str) -> str:
     else:
         reply = engine.get_response(intent, language)
 
-    # Format for SMS
     if channel == "sms":
-        reply = _sms_format(reply)
+        reply = _sms_format(reply, include_safety_notice=True)
+    else:
+        reply = with_safety_notice(reply)
 
     save_state(phone, language, intent)
     log_db(phone, body, reply, intent, channel, language)
@@ -181,6 +204,22 @@ def process_message(body: str, phone: str, channel: str) -> str:
 @webhook_bp.route("/webhook/sms", methods=["POST"])
 @webhook_bp.route("/webhook/whatsapp", methods=["POST"])
 def twilio_webhook():
+    auth_token = current_app.config.get("TWILIO_AUTH_TOKEN")
+    if not auth_token:
+        return jsonify({"error": "Twilio webhook authentication is not configured"}), 503
+
+    signature = request.headers.get("X-Twilio-Signature", "")
+    base_url = current_app.config.get("TWILIO_WEBHOOK_BASE_URL")
+    if base_url:
+        public_url = f"{base_url.rstrip('/')}{request.path}"
+        if request.query_string:
+            public_url = f"{public_url}?{request.query_string.decode('ascii')}"
+    else:
+        public_url = request.url
+    validator = RequestValidator(auth_token)
+    if not validator.validate(public_url, request.form, signature):
+        return jsonify({"error": "invalid Twilio signature"}), 403
+
     body    = (request.form.get("Body") or "").strip()
     sender  = request.form.get("From", "unknown")
     channel = "whatsapp" if "whatsapp" in sender.lower() else "sms"
